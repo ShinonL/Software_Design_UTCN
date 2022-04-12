@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<VBox prefHeight="350.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sd.assignment_1_sd.controller.TravellingAgencyController">
+    <children>
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="400.0" prefWidth="744.0" VBox.vgrow="ALWAYS" >
+            <children>
+                <TabPane layoutX="-2.0" layoutY="-2.0" prefHeight="274.0" prefWidth="720.0" tabClosingPolicy="UNAVAILABLE" fx:id ="tabPane">
+                    <tabs>
+                        <Tab text="Destinations" onSelectionChanged="#updateView">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="252.0" prefWidth="720.0">
+                                    <children>
+                                        <TableView prefHeight="247.0" prefWidth="720.0" fx:id = "destinationsTableView">
+                                            <columns>
+                                                <TableColumn prefWidth="134.39996945858002" text="Package Name" />
+                                                <TableColumn prefWidth="100.0" text="Destination" />
+                                                <TableColumn prefWidth="67.20001220703125" text="Price" />
+                                                <TableColumn prefWidth="89.60003662109375" text="StartDate" />
+                                                <TableColumn prefWidth="106.39996337890625" text="EndDate" />
+                                                <TableColumn prefWidth="146.39987182617188" text="Extra Details" />
+                                            </columns>
+                                        </TableView>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab text="Vacation Packages" onSelectionChanged="#updateView">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="246.0" prefWidth="720.0">
+                                    <children>
+                                        <TableView prefHeight="246.0" prefWidth="720.0" fx:id = "vacationPackagesTableView" onMouseClicked="#fetchData">
+                                            <columns>
+                                                <TableColumn prefWidth="134.39996945858002" text="Package Name" />
+                                                <TableColumn prefWidth="92.79998779296875" text="Destination" />
+                                                <TableColumn prefWidth="65.60003662109375" text="Price" />
+                                                <TableColumn prefWidth="75.20001220703125" text="StartDate" />
+                                                <TableColumn prefWidth="78.4000244140625" text="EndDate" />
+                                                <TableColumn prefWidth="104.79995727539062" text="Packages left" />
+                                                <TableColumn prefWidth="96.800048828125" text="Extra Details" />
+                                            </columns>
+                                        </TableView>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+                <Text layoutX="818.0" layoutY="44.0"  strokeType="OUTSIDE" strokeWidth="0.0" text="Destination name" fx:id="packageNameText"/>
+                <Text layoutX="818.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" fx:id = "destinationText" visible="false"/>
+                <Text layoutX="818.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" fx:id ="priceText" />
+                <Text layoutX="818.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start date" fx:id = "startDateText"  visible="false"/>
+                <Text layoutX="818.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End date" fx:id = "endDateText"  visible="false"/>
+                <Text layoutX="818.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Extra details" fx:id = "extraDetailsText"  visible="false"/>
+                <Text layoutX="818.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No. People" fx:id = "noPeopleText"  visible="false"/>
+                <TextField layoutX="916.0" layoutY="27.0" fx:id = "packageNameTextField"/>
+                <ChoiceBox layoutX="916.0" layoutY="68.0" prefWidth="150.0" fx:id = "destinationChoiceBox" visible="false"/>
+                <TextField layoutX="916.0" layoutY="103.0" fx:id = "priceTextField"/>
+                <DatePicker layoutX="916.0" layoutY="143.0" fx:id = "startDatePicker" visible="false"/>
+                <DatePicker layoutX="916.0" layoutY="179.0" fx:id = "endDatePicker" visible="false"/>
+                <TextField layoutX="916.0" layoutY="216.0" fx:id = "extraDetailsTextField" visible="false"/>
+                <TextField layoutX="916.0" layoutY="254.0" fx:id = "noPeopleTextField" visible="false"/>
+                <Button layoutX="47.0" layoutY="316.0" mnemonicParsing="false" text="Add new package" onAction="#addNew" fx:id = "addNewButton"/>
+                <Button layoutX="179.0" layoutY="316.0" mnemonicParsing="false" text="Edit package" onAction="#editPackage" fx:id = "editButton" visible="false"/>
+                <Button layoutX="288.0" layoutY="316.0" mnemonicParsing="false" text="Delete package" onAction="#delete" fx:id = "deleteButton"/>
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>

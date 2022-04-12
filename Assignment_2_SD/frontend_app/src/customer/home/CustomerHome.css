@@ -1,0 +1,24 @@
+  .flex-row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .flex-end {
+    justify-content: flex-end;
+  }
+  
+  .zone-card {
+    margin-right: 30px;
+  }
+
+  .container {
+    margin-left: 200px;
+    margin-left: 200px;
+  }
+
+  h2 {
+    margin-top: 40px;
+    margin-bottom: 30px;
+
+    margin-left: 40%;
+  }

@@ -1,0 +1,6 @@
+.background-photo {
+    background-image: url(https://source.unsplash.com/1900x1080/?food);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
