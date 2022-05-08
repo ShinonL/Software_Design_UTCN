@@ -17,7 +17,7 @@ public class AdminService {
     private UserService userService;
 
     public void createAdmin(UserDTO userDTO) throws Exception {
-        userDTO.setRole(Role.ADMINISTRATOR);
+        userDTO.setRole(Role.ROLE_ADMINISTRATOR);
         User user = userService.createUser(userDTO);
 
         Admin admin = new Admin();

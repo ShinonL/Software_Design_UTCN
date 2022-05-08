@@ -18,7 +18,7 @@ import './Login.css'
 import SimpleError from '../error/SimpleError';
 
 const theme = createTheme();
-const API_LOGIN = config.apiRoot + 'auth/login';
+const API_LOGIN = config.authRoot + 'login';
 const ERROR_TITLE = "Login Error";
 
 export default function Login() {
@@ -53,7 +53,7 @@ export default function Login() {
                 localStorage.setItem('user', response.data.username);
                 localStorage.setItem('role', response.data.role);
 
-                if (response.data.role === 'ADMINISTRATOR') 
+                if (response.data.role === 'ROLE_ADMINISTRATOR') 
                     navigate('/admin/home');
                 else navigate('/home');
             })
@@ -64,9 +64,9 @@ export default function Login() {
     };
 
     React.useEffect(() =>{
-        if (localStorage.getItem('role') === 'CUSTOMER')
+        if (localStorage.getItem('role') === 'ROLE_CUSTOMER')
           navigate('/home');
-        else if (localStorage.getItem('role') === 'ADMINISTRATOR')
+        else if (localStorage.getItem('role') === 'ROLE_ADMINISTRATOR')
           navigate('/admin/home');
       })
 

@@ -10,7 +10,7 @@ import SimpleError from '../../error/SimpleError';
 import ZoneItem from './ZoneItem';
 import  { logout } from  '../../common/utils';
 
-const API_GET_ZONES = config.apiRoot + 'zone/getAll';
+const API_GET_ZONES = config.commonRoot + 'get-zones';
 const ERROR_TITLE = "Delivey Zones Error";
 
 function CustomerHome() {
@@ -21,7 +21,7 @@ function CustomerHome() {
   const [error, setError] = React.useState("");
 
   React.useEffect(() => {
-    if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'CUSTOMER') {
+    if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ROLE_CUSTOMER') {
       logout();
       navigate('/login');
       return;

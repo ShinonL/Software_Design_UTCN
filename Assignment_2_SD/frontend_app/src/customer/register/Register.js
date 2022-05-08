@@ -17,7 +17,7 @@ import config from '../../config.json'
 import SimpleError from '../../error/SimpleError';
 
 const theme = createTheme();
-const API_REGISTER = config.apiRoot + 'auth/register';
+const API_REGISTER = config.authRoot + 'register';
 const ERROR_TITLE = "Register Error";
 
 export default function SignUp() {
@@ -53,7 +53,7 @@ export default function SignUp() {
                     throw new Error(response.message);
 
                 localStorage.setItem('user', data.username);
-                localStorage.setItem('role', 'CUSTOMER');
+                localStorage.setItem('role', 'ROLE_CUSTOMER');
 
                 navigate('/home');
             })
@@ -64,9 +64,9 @@ export default function SignUp() {
   };
 
   React.useEffect(() =>{
-    if (localStorage.getItem('role') === 'CUSTOMER')
+    if (localStorage.getItem('role') === 'ROLE_CUSTOMER')
       navigate('/home');
-    else if (localStorage.getItem('role') === 'ADMINISTRATOR')
+    else if (localStorage.getItem('role') === 'ROLE_ADMINISTRATOR')
       navigate('/admin/home');
   })
 

@@ -14,7 +14,7 @@ import RestaurantItem from '../../common/RestaurantItem';
 import './AdminHome.css';
 import { logout } from '../../common/utils';
 
-const API_GET_RESTAURANTS = config.apiRoot + 'restaurant/getMyRestaurants/';
+const API_GET_RESTAURANTS = config.adminRoot + 'get-restaurants-by-username/';
 const ERROR_TITLE = "Restaurants Error";
 
 function AdminHome() {
@@ -24,7 +24,7 @@ function AdminHome() {
     const [error, setError] = React.useState("");
 
   React.useEffect(() => {
-    if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ADMINISTRATOR') {
+    if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ROLE_ADMINISTRATOR') {
         logout();
         navigate('/login');
         return;

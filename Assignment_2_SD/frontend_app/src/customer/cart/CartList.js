@@ -21,11 +21,11 @@ import SimpleError from '../../error/SimpleError';
 import CartItem from './CartItem';
 import { formatNumber, logout } from '../../common/utils';
 
-const API_GET_CART = config.apiRoot + 'cart/getAll/';
-const API_GET_ZONES = config.apiRoot + 'zone/getAll';
-const API_EMPTY_CART = config.apiRoot + 'cart/emptyCart/';
-const API_ORDER = config.apiRoot + 'order/createOrder';
-const ERROR_TITLE = "Delivey Zones Error";
+const API_GET_CART = config.customerRoot + 'get-cart-by-username/';
+const API_GET_ZONES = config.commonRoot + 'get-zones';
+const API_EMPTY_CART = config.customerRoot + 'delete-cart/';
+const API_ORDER = config.customerRoot + 'create-order';
+const ERROR_TITLE = "Cart Error";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -46,7 +46,7 @@ function CartList() {
     const [selectedZone, setZone] = React.useState('');
 
     React.useEffect(() => {
-      if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'CUSTOMER') {
+      if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ROLE_CUSTOMER') {
         logout();
         navigate('/login');
         return;
@@ -72,7 +72,7 @@ function CartList() {
 
                 var amount = 0;
                 cartItems.forEach(cartItem => {
-                    amount += cartItem.foodDTO.price;
+                    amount = amount + cartItem.foodDTO.price * cartItem.quantity;
                 });
 
                 setTotal(formatNumber(amount));
@@ -164,6 +164,10 @@ function CartList() {
       setLocation(formData.get('location'));
   }
 
+  const getNumberOfItems = (cart) => {
+    return cart.map(cartItem => {return cartItem.quantity}).reduce((partialSum, a) => partialSum + a, 0)
+  }
+
   return (
     <div>
        <SimpleError 
@@ -186,7 +190,7 @@ function CartList() {
         <Grid container spacing={3}>
           <Grid item xs={3.5}>
             <Item>
-              <h3>Number of Items: {cartItems.length}</h3>
+              <h3>Number of Items: {getNumberOfItems(cartItems)}</h3>
               <h3>Totatl Price: {total}</h3>
             </Item>
           </Grid>

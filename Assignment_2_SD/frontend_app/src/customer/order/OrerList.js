@@ -19,7 +19,7 @@ import { Chip, Divider } from '@mui/material';
 import './OrderList.css';
 
 const ERROR_TITLE = "Orders Error";
-const API_GET_ORDERS = config.apiRoot + 'order/getOrders/user/'
+const API_GET_ORDERS = config.customerRoot + 'get-orders-by-user/'
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -42,7 +42,7 @@ export default function OrderList() {
   };
 
   React.useEffect(() => {
-    if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'CUSTOMER') {
+    if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ROLE_CUSTOMER') {
         logout();
         navigate('/login');
         return;

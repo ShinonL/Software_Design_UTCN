@@ -25,7 +25,7 @@ public class RestaurantService {
     @Autowired
     private ZoneRepository zoneRepository;
 
-    public void addNew(RestaurantDTO restaurantDTO) throws Exception {
+    public void createRestaurant(RestaurantDTO restaurantDTO) throws Exception {
         RestaurantValidator.isRestaurantValid(restaurantDTO, restaurantRepository);
 
         Admin admin = adminRepository.findByUsername(restaurantDTO.getUsername());
@@ -42,21 +42,21 @@ public class RestaurantService {
         restaurantRepository.save(restaurant);
     }
 
-    public List<RestaurantDTO> getAll(String zoneId) {
+    public List<RestaurantDTO> getRestaurantsByZone(String zoneId) {
         return restaurantRepository.findByZoneId(zoneId)
                 .stream()
                 .map(RestaurantMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<RestaurantDTO> getRestaurantsByName(String restaurantName, String zoneId) {
+    public List<RestaurantDTO> getRestaurantsByNameAndZone(String restaurantName, String zoneId) {
         return restaurantRepository.findByNameAndZone(restaurantName, zoneId)
                 .stream()
                 .map(RestaurantMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<RestaurantDTO> getRestaurants(String username) {
+    public List<RestaurantDTO> getRestaurantsByUsername(String username) {
         return restaurantRepository.findByUsername(username)
                 .stream()
                 .map(RestaurantMapper::convertToDTO)

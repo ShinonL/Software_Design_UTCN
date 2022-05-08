@@ -8,6 +8,7 @@ import sd.assignment.backend_app.common.enums.Role;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
     private User user;
@@ -18,17 +19,17 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(user.getRole().equals(Role.CUSTOMER))
-            return Arrays.asList(new SimpleGrantedAuthority("CUSTOMER"));
-        return Arrays.asList(new SimpleGrantedAuthority("ADMINISTRATOR"));
+        if(user.getRole().equals(Role.ROLE_CUSTOMER))
+            return List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_ADMINISTRATOR"));
     }
 
     public boolean isAdministrator() {
-        return user.getRole().equals(Role.CUSTOMER);
+        return user.getRole().equals(Role.ROLE_ADMINISTRATOR);
     }
 
     public boolean isCustomer() {
-        return user.getRole().equals(Role.CUSTOMER);
+        return user.getRole().equals(Role.ROLE_CUSTOMER);
     }
 
     public User getUser() {

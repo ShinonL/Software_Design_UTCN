@@ -13,8 +13,8 @@ import config from '../../config.json'
 import SimpleError from '../../error/SimpleError';
 import RestaurantItem from '../../common/RestaurantItem';
 
-const API_GET_RESTAURANTS = config.apiRoot + 'restaurant/getAll/';
-const API_FILTER_RESTAURANTS = config.apiRoot + 'restaurant/getByName/';
+const API_GET_RESTAURANTS = config.customerRoot + 'get-restaurants-by-zone/';
+const API_FILTER_RESTAURANTS = config.customerRoot + 'get-restaurant-by-name/';
 const ERROR_TITLE = "Restaurants Error";
 
 function RestaurantList() {
@@ -68,6 +68,7 @@ function RestaurantList() {
                 if (response.httpStatusCode !== 200)
                     throw new Error(response.message);
 
+                    console.log(response.data)
                 setRestaurants(response.data);
             })
             .catch(err => {

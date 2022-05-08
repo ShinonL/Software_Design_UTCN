@@ -27,7 +27,7 @@ public class CartService {
     @Autowired
     private FoodRepository foodRepository;
 
-    public void addNew(CartDTO cartDTO) throws Exception {
+    public void addToCart(CartDTO cartDTO) throws Exception {
         CartValidator.isCartValid(cartDTO);
 
         User user = userRepository.findByUsername(cartDTO.getUsername());
@@ -46,7 +46,7 @@ public class CartService {
         cartRepository.save(CartMapper.convertToEntity(cartDTO, foodRepository, userRepository));
     }
 
-    public void deleteAll(String username) throws Exception {
+    public void deleteCartByUsername(String username) throws Exception {
         User user = userRepository.findByUsername(username);
         if (user == null)
             throw new NotFoundException("User not found.");
@@ -54,7 +54,7 @@ public class CartService {
         cartRepository.deleteAll(user.getCarts());
     }
 
-    public List<CartDTO> getAll(String username) throws Exception {
+    public List<CartDTO> getCartByUsername(String username) throws Exception {
         User user = userRepository.findByUsername(username);
         if (user == null)
             throw new NotFoundException("User not found.");

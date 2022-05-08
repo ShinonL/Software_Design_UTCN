@@ -5,29 +5,28 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sd.assignment.backend_app.dtos.RestaurantDTO;
 import sd.assignment.backend_app.dtos.ZoneDTO;
 import sd.assignment.backend_app.response.ApiResponse;
 import sd.assignment.backend_app.services.CustomerFacade;
+import sd.assignment.backend_app.services.ZoneService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/zone")
-public class ZoneController {
+@RequestMapping("/common")
+public class CommonController {
     @Autowired
-    private CustomerFacade customerFacade;
+    private ZoneService zoneService;
 
-    @GetMapping("/getAll")
-    public ResponseEntity<ApiResponse> getAll() {
+    @GetMapping("/get-zones")
+    public ResponseEntity<ApiResponse> getZones() {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Responded", "ZoneController::getAll");
+        httpHeaders.add("Responded", "CustomerController::getZones");
 
         try {
-            List<ZoneDTO> zones = customerFacade.getAllZones();
+            List<ZoneDTO> zones = zoneService.getZones();
 
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(), "Successfully retrieved zones.")
                     .withHttpHeader(httpHeaders)

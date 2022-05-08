@@ -24,31 +24,31 @@ public class AdminFacade {
         adminService.createAdmin(userDTO);
     }
 
-    public void addNewRestaurant(RestaurantDTO restaurantDTO) throws Exception {
-        restaurantService.addNew(restaurantDTO);
+    public void createRestaurant(RestaurantDTO restaurantDTO) throws Exception {
+        restaurantService.createRestaurant(restaurantDTO);
     }
 
-    public void addNewFood(FoodDTO foodDTO) throws Exception {
-        foodService.addNew(foodDTO);
+    public void createFood(FoodDTO foodDTO) throws Exception {
+        foodService.createFood(foodDTO);
     }
 
-    public List<FoodDTO> getFoods(String restaurantId) throws Exception {
-        return foodService.getFoods(restaurantId);
+    public List<FoodDTO> getFoodsByRestaurant(String restaurantId) throws Exception {
+        return foodService.getFoodsByRestaurant(restaurantId);
     }
 
     public List<OrderDTO> getOrdersByRestaurant(String restaurantId) throws Exception {
-        return orderService.getAllByRestaurant(restaurantId);
+        return orderService.getOrdersByRestaurant(restaurantId);
     }
 
-    public OrderDTO changeStatus(OrderDTO orderDTO) throws Exception {
+    public OrderDTO changeOrderStatus(OrderDTO orderDTO) throws Exception {
         return orderService.changeOrderStatus(orderDTO);
     }
 
-    public List<OrderDTO> filterByStatus(String orderState, String restaurantId) throws Exception {
-        return orderService.getByState(orderState, restaurantId);
+    public List<OrderDTO> filterOrdersByStatusAndRestaurant(String orderState, String restaurantId) throws Exception {
+        return orderService.filterOrdersByStatusAndRestaurant(orderState, restaurantId);
     }
 
-    public List<RestaurantDTO> getRestaurants(String username) throws Exception {
-        return restaurantService.getRestaurants(username);
+    public List<RestaurantDTO> getRestaurantsByUsername(String username) throws Exception {
+        return restaurantService.getRestaurantsByUsername(username);
     }
 }

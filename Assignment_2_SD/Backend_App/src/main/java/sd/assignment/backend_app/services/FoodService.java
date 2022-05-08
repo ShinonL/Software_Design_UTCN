@@ -21,7 +21,7 @@ public class FoodService {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
-    public void addNew(FoodDTO foodDTO) throws Exception {
+    public void createFood(FoodDTO foodDTO) throws Exception {
         FoodValidator.isFoodValid(foodDTO);
 
         Restaurant restaurant = restaurantRepository.findByName(foodDTO.getRestaurantName());
@@ -32,7 +32,7 @@ public class FoodService {
         foodRepository.save(FoodMapper.convertToEntity(foodDTO, restaurantRepository));
     }
 
-    public List<FoodDTO> getFoods(String restaurantId) throws Exception {
+    public List<FoodDTO> getFoodsByRestaurant(String restaurantId) throws Exception {
         Optional<Restaurant> restaurant = restaurantRepository.findById(restaurantId);
         if (restaurant.isEmpty())
             throw new NotFoundException("Restaurant was not found.");

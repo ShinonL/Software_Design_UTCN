@@ -15,7 +15,7 @@ public class ZoneService {
     @Autowired
     private ZoneRepository zoneRepository;
 
-    public List<ZoneDTO> getAll() throws Exception {
+    public List<ZoneDTO> getZones() throws Exception {
         return zoneRepository.findAll()
                 .stream()
                 .map(ZoneMapper::convertToDTO)

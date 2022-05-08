@@ -9,12 +9,14 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+
 import OptionError from "../../../error/OptionError";
 import './FoodItem.css'
+import config from '../../../config.json'
 
-const API_ADD_TO_CART = 'http://localhost:8080/api/foodpanda/cart/addToCart';
-const API_EMPTY_CART = 'http://localhost:8080/api/foodpanda/cart/emptyCart/';
-const ERROR_TITLE = "Add to Cart Error";
+const API_ADD_TO_CART = config.customerRoot + 'add-to-cart';
+const API_EMPTY_CART = config.customerRoot + 'delete-cart/';
+const ERROR_TITLE = "Food Item Error";
 
 function FoodItem(props) {
   const [quantity, setQuantity] = React.useState(0);
@@ -29,7 +31,7 @@ function FoodItem(props) {
             id: props.id,
             restaurantName: props.restaurantName
         },
-        quantity: 1
+        quantity: quantity
     };
 
     const requestOptions = {
@@ -69,6 +71,9 @@ function FoodItem(props) {
       .then(response => {
         if (response.httpStatusCode !== 200)
           throw new Error(response.message);
+          setOpen(false);
+            setError("");
+            setQuantity(0);
       })
       .catch(err => {
         setOpen(true);

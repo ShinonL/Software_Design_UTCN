@@ -15,7 +15,6 @@ public class CustomDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-
     public List<User> findUsers() {
         return userRepository.findAll();
     }
@@ -31,6 +30,7 @@ public class CustomDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByUsername(username);
+
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }

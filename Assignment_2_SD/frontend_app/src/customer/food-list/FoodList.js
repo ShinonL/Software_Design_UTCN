@@ -10,9 +10,7 @@ import SimpleError from '../../error/SimpleError';
 import FoodItem from './food-item/FoodItem';
 import { logout } from '../../common/utils';
 
-const API_GET_RESTAURANTS = config.apiRoot + 'restaurant/getAll/';
-const API_FILTER_RESTAURANTS = config.apiRoot + 'restaurant/getByName/';
-const ERROR_TITLE = "Delivey Zones Error";
+const ERROR_TITLE = "Foods Error";
 
 function FoodList() {
     let location = useLocation();
@@ -22,7 +20,7 @@ function FoodList() {
     const [error, setError] = React.useState("");
 
     React.useEffect(() => {
-        if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'CUSTOMER') {
+        if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ROLE_CUSTOMER') {
             logout();
             navigate('/login');
             return;

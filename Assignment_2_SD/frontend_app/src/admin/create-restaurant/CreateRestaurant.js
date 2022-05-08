@@ -23,8 +23,8 @@ import SimpleError from '../../error/SimpleError';
 import { logout } from '../../common/utils';
 
 const theme = createTheme();
-const API_CREATE = config.apiRoot + 'restaurant/createRestaurant';
-const API_GET_ZONES = config.apiRoot + 'zone/getAll';
+const API_CREATE = config.adminRoot + 'create-restaurant';
+const API_GET_ZONES = config.commonRoot + 'get-zones';
 const ERROR_TITLE = "Create Restaurant Error";
 
 const ITEM_HEIGHT = 48;
@@ -112,7 +112,7 @@ export default function CreateRestaurant() {
                     throw new Error(response.message);
 
                 localStorage.setItem('user', data.username);
-                localStorage.setItem('role', 'CUSTOMER');
+                localStorage.setItem('role', 'ROLE_CUSTOMER');
 
                 navigate('/admin/home');
             })

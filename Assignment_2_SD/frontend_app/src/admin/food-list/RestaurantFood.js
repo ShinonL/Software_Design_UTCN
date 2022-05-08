@@ -12,9 +12,8 @@ import Food from './Food';
 import { Button } from '@mui/material';
 import AddFoodDialog from './AddFoodDialog';
 
-const API_GET_FOODS = config.apiRoot + 'food/getFoods/';
-const API_FILTER_RESTAURANTS = config.apiRoot + 'restaurant/getByName/';
-const ERROR_TITLE = "Delivey Zones Error";
+const API_GET_FOODS = config.adminRoot + 'get-foods/';
+const ERROR_TITLE = "Food Error";
 export const PlusCircleIcon = ({width}) => <svg width={width}  fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" fillRule="evenodd"></path></svg>
 
 function RestaurantFood() {
@@ -36,7 +35,7 @@ function RestaurantFood() {
     };
 
     React.useEffect(() => {
-        if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ADMINISTRATOR') {
+        if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ROLE_ADMINISTRATOR') {
             logout();
             navigate('/login');
             return;

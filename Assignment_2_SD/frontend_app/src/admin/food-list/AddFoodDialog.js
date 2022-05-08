@@ -4,7 +4,7 @@ import config from '../../config.json'
 import SimpleError from '../../error/SimpleError';
 import { Box, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
 
-const API_CREATE = config.apiRoot + 'food/createFood';
+const API_CREATE = config.adminRoot + 'create-food';
 const ERROR_TITLE = 'Create Food Error';
 
 const styles = {

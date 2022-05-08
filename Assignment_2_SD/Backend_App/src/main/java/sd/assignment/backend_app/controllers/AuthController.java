@@ -37,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse> loginUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<ApiResponse> findUser(@RequestBody UserDTO userDTO) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Responded", "AuthController::loginUser");
 

@@ -12,14 +12,14 @@ import java.io.IOException;
 import java.util.Set;
 
 @Configuration
-public class CustomAuthenticationSucces implements AuthenticationSuccessHandler {
+public class CustomAuthenticationSuccess implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-        if (roles.contains("CUSTOMER")) {
-            httpServletResponse.sendRedirect("restaurant");
+        if (roles.contains("ROLE_CUSTOMER")) {
+            httpServletResponse.sendRedirect("customer");
         } else {
-            httpServletResponse.sendRedirect("user");
+            httpServletResponse.sendRedirect("admin");
         }
     }
 }

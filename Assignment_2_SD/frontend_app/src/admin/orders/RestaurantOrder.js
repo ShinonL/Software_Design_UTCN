@@ -23,9 +23,9 @@ import { ButtonGroup, Chip, Divider, Button } from '@mui/material';
 import './RestaurantOrder.css';
 
 const ERROR_TITLE = "Orders Error";
-const API_GET_ORDERS = config.apiRoot + 'order/getOrders/restaurant/'
-const API_FILTER_ORDERS = config.apiRoot + 'order/filterByStatus/'
-const API_CHANGE_STATUS = config.apiRoot + 'order/changeOrderStatus'
+const API_GET_ORDERS = config.adminRoot + 'get-orders/'
+const API_FILTER_ORDERS = config.adminRoot + 'filter-order-by-status/'
+const API_CHANGE_STATUS = config.adminRoot + 'change-order-status'
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -50,7 +50,7 @@ export default function RestaurantOrder() {
   };
 
   React.useEffect(() => {
-    if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ADMINISTRATOR') {
+    if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ROLE_ADMINISTRATOR') {
         logout();
         navigate('/login');
         return;

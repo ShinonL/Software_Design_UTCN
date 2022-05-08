@@ -12,18 +12,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
-@Configuration
 @EnableWebSecurity
 public class WebAppConfig extends WebSecurityConfigurerAdapter {
-    private final CustomAuthenticationSucces customAuthenticationSucces;
+    private final CustomAuthenticationSuccess customAuthenticationSucces;
 
     @Autowired
-    CustomDetailsService customDetailsService;
+    private CustomDetailsService customDetailsService;
 
     @Autowired
     private UserDetailsService userDetailsService;
 
-    public WebAppConfig(CustomAuthenticationSucces customAuthenticationSucces) {
+    public WebAppConfig(CustomAuthenticationSuccess customAuthenticationSucces) {
         this.customAuthenticationSucces = customAuthenticationSucces;
     }
 
@@ -34,11 +33,15 @@ public class WebAppConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.csrf()
+        http.cors()
+            .and()
+            .csrf()
             .disable()
             .authorizeRequests()
-            .antMatchers("/**")
-            .permitAll()
+//            .antMatchers("/**").permitAll()
+            .antMatchers("/admin/**").hasRole("ADMINISTRATOR")
+            .antMatchers("/customer/**").hasRole("CUSTOMER")
+            .antMatchers("/auth/**", "/common/**").permitAll()
             .anyRequest()
             .authenticated()
             .and()

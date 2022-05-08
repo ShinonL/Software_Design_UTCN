@@ -1,3 +1,6 @@
 {
-    "apiRoot" : "http://localhost:8080/api/foodpanda/"
+    "adminRoot" : "http://localhost:8080/api/foodpanda/admin/",
+    "customerRoot" : "http://localhost:8080/api/foodpanda/customer/",
+    "commonRoot" : "http://localhost:8080/api/foodpanda/common/",
+    "authRoot" : "http://localhost:8080/api/foodpanda/auth/"
 }

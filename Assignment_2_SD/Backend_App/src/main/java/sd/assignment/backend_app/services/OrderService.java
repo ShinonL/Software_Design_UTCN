@@ -57,7 +57,7 @@ public class OrderService {
 
             orderDetails.add(orderDetail);
         }
-        cartService.deleteAll(orderDTO.getUsername());
+        cartService.deleteCartByUsername(orderDTO.getUsername());
 
         orderDTO.setOrderState(OrderState.PENDING);
 
@@ -72,7 +72,7 @@ public class OrderService {
         }
     }
 
-    public List<OrderDTO> getAll(String username) throws Exception {
+    public List<OrderDTO> getOrdersByUsername(String username) throws Exception {
         User user = userRepository.findByUsername(username);
         if (user == null)
             throw new NotFoundException("User not found.");
@@ -83,7 +83,7 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    public List<OrderDTO> getAllByRestaurant(String restaurantId) throws Exception {
+    public List<OrderDTO> getOrdersByRestaurant(String restaurantId) throws Exception {
         Optional<Restaurant> restaurant = restaurantRepository.findById(restaurantId);
         if (restaurant.isEmpty())
             throw new NotFoundException("restaurant not found.");
@@ -94,7 +94,7 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    public List<OrderDTO> getByState(String state, String restaurantId) throws Exception {
+    public List<OrderDTO> filterOrdersByStatusAndRestaurant(String state, String restaurantId) throws Exception {
         OrderState orderState;
 
         switch (state.toLowerCase()) {
@@ -133,13 +133,13 @@ public class OrderService {
             throw new NotFoundException("Order was not found.");
 
         Order updatedOrder = order.get();
-        updatedOrder.setOrderState(getNext(updatedOrder.getOrderState(), orderDTO.isToDecline()));
+        updatedOrder.setOrderState(getNextState(updatedOrder.getOrderState(), orderDTO.isToDecline()));
         orderRepository.save(updatedOrder);
 
         return OrderMapper.convertToDTO(updatedOrder);
     }
 
-    private OrderState getNext(OrderState orderState, boolean decline) throws Exception {
+    private OrderState getNextState(OrderState orderState, boolean decline) throws Exception {
         switch (orderState) {
             case PENDING:
                 if (decline)
