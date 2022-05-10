@@ -1,5 +1,8 @@
 package sd.assignment.backend_app.controllers;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,11 +16,14 @@ import sd.assignment.backend_app.services.CustomerFacade;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
     @Autowired
     private CustomerFacade customerFacade;
+
+    private final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
     @PostMapping("/add-to-cart")
     public ResponseEntity<ApiResponse> addToCart(@RequestBody CartDTO cartDTO) {
@@ -25,13 +31,17 @@ public class CustomerController {
         httpHeaders.add("Responded", "CustomerController::addToCart");
 
         try {
+            logger.info("Adding foods to cart for" + cartDTO.getUsername());
             customerFacade.addToCart(cartDTO);
 
+            logger.info("Successfully added foods to cart for" + cartDTO.getUsername());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(), "Successfully added to cart")
                     .withHttpHeader(httpHeaders)
                     .build();
 
         } catch (Exception ex) {
+            logger.error("Error adding foods to cart for" + cartDTO.getUsername());
+            logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)
                     .build();
@@ -44,13 +54,17 @@ public class CustomerController {
         httpHeaders.add("Responded", "CustomerController::deleteCartByUsername");
 
         try {
+            logger.info("Deleting foods from cart for" + username);
             customerFacade.deleteCartByUsername(username);
 
+            logger.info("Successfully deleted foods from cart for" + username);
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(), "Successfully emptied cart")
                     .withHttpHeader(httpHeaders)
                     .build();
 
         } catch (Exception ex) {
+            logger.error("Error deleting foods from cart for" + username);
+            logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)
                     .build();
@@ -63,14 +77,18 @@ public class CustomerController {
         httpHeaders.add("Responded", "CustomerController::getCartByUsername");
 
         try {
+            logger.info("Retrieving foods from cart for" + username);
             List<CartDTO> cart = customerFacade.getCartByUsername(username);
 
+            logger.info("Successfully retrieved foods from cart for" + username);
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(), "Successfully retrieved cart products")
                     .withHttpHeader(httpHeaders)
                     .withData(cart)
                     .build();
 
         } catch (Exception ex) {
+            logger.error("Error retrieving foods from cart for" + username);
+            logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)
                     .build();
@@ -83,13 +101,17 @@ public class CustomerController {
         httpHeaders.add("Responded", "CustomerController::createOrder");
 
         try {
+            logger.info("Creating order for " + orderDTO.getUsername());
             customerFacade.createOrder(orderDTO);
 
+            logger.info("Successfully created order for " + orderDTO.getUsername());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(), "Successfully added new order")
                     .withHttpHeader(httpHeaders)
                     .build();
 
         } catch (Exception ex) {
+            logger.error("Error creating order for " + orderDTO.getUsername());
+            logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)
                     .build();
@@ -102,14 +124,18 @@ public class CustomerController {
         httpHeaders.add("Responded", "CustomerController::getOrdersByUsername");
 
         try {
+            logger.info("Retrieving orders for " + username);
             List<OrderDTO> orders = customerFacade.getOrdersByUsername(username);
 
+            logger.info("Successfully retrieved order for " + username);
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(), "Successfully retrieved orders")
                     .withHttpHeader(httpHeaders)
                     .withData(orders)
                     .build();
 
         } catch (Exception ex) {
+            logger.error("Error retrieving orders for " + username);
+            logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)
                     .build();
@@ -122,14 +148,18 @@ public class CustomerController {
         httpHeaders.add("Responded", "CustomerController::getRestaurantsByZone");
 
         try {
+            logger.info("Retrieving restaurants for zone " + zoneId);
             List<RestaurantDTO> restaurants = customerFacade.getRestaurantsByZone(zoneId);
 
+            logger.info("Successfully retrieved restaurants for zone " + zoneId);
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(), "Successfully retrieved restaurants")
                     .withHttpHeader(httpHeaders)
                     .withData(restaurants)
                     .build();
 
         } catch (Exception ex) {
+            logger.error("Error retrieving restaurants for zone " + zoneId);
+            logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)
                     .build();
@@ -145,13 +175,17 @@ public class CustomerController {
         httpHeaders.add("Responded", "CustomerController::getRestaurantsByNameAndZone");
 
         try {
+            logger.info("Retrieving restaurants for zone " + zoneId + " by name " + restaurantDTO.getName());
             List<RestaurantDTO> restaurants = customerFacade.getRestaurantsByNameAndZone(restaurantDTO.getName(), zoneId);
 
+            logger.info("Successfully retrieved restaurants for zone " + zoneId + " by name " + restaurantDTO.getName());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(), "Successfully retrieved restaurants")
                     .withHttpHeader(httpHeaders)
                     .withData(restaurants)
                     .build();
         } catch (Exception ex) {
+            logger.error("Error retrieving restaurants for zone " + zoneId + " by name " + restaurantDTO.getName());
+            logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)
                     .build();
