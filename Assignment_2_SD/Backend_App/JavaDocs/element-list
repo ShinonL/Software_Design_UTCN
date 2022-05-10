@@ -1,0 +1,13 @@
+sd.assignment_2_sd
+sd.assignment.backend
+sd.assignment.backend.common.enums
+sd.assignment.backend.common.exceptions
+sd.assignment.backend.common.mappers
+sd.assignment.backend.controllers
+sd.assignment.backend.dtos
+sd.assignment.backend.entities
+sd.assignment.backend.repositories
+sd.assignment.backend.response
+sd.assignment.backend.security
+sd.assignment.backend.services
+sd.assignment.backend.validators
