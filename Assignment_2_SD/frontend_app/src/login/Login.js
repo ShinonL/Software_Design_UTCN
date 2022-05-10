@@ -16,6 +16,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import config from '../config.json'
 import './Login.css'
 import SimpleError from '../error/SimpleError';
+import jwt from 'jwt-decode'
 
 const theme = createTheme();
 const API_LOGIN = config.authRoot + 'login';
@@ -23,6 +24,7 @@ const ERROR_TITLE = "Login Error";
 
 export default function Login() {
     let navigate = useNavigate();
+
     const [open, setOpen] = React.useState(false);
     const [error, setError] = React.useState("");
 
@@ -50,10 +52,10 @@ export default function Login() {
                 if (response.httpStatusCode !== 200)
                     throw new Error(response.message);
 
-                localStorage.setItem('user', response.data.username);
-                localStorage.setItem('role', response.data.role);
+                localStorage.setItem('role', jwt(response.data).role[0].authority);
+                localStorage.setItem('token', response.data);
 
-                if (response.data.role === 'ROLE_ADMINISTRATOR') 
+                if (localStorage.getItem('role') === 'ROLE_ADMINISTRATOR') 
                     navigate('/admin/home');
                 else navigate('/home');
             })
@@ -64,10 +66,10 @@ export default function Login() {
     };
 
     React.useEffect(() =>{
-        if (localStorage.getItem('role') === 'ROLE_CUSTOMER')
-          navigate('/home');
-        else if (localStorage.getItem('role') === 'ROLE_ADMINISTRATOR')
-          navigate('/admin/home');
+        if (localStorage.getItem('role') === 'ROLE_ADMINISTRATOR') 
+            navigate('/admin/home');
+        else if (localStorage.getItem('role') === 'ROLE_CUSTOMER') 
+            navigate('/home');
       })
 
     return (

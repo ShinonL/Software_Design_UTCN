@@ -13,6 +13,9 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import OptionError from "../../../error/OptionError";
 import './FoodItem.css'
 import config from '../../../config.json'
+import { useAuth } from '../../../common/utils'
+
+import jwt from 'jwt-decode';
 
 const API_ADD_TO_CART = config.customerRoot + 'add-to-cart';
 const API_EMPTY_CART = config.customerRoot + 'delete-cart/';
@@ -23,10 +26,12 @@ function FoodItem(props) {
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState("");
 
+  const user = jwt(localStorage.getItem('token'));
+
   const handleClick = (event) => {
     event.preventDefault();
     const data = {
-        username: localStorage.getItem('user'),
+        username: user.username,
         foodDTO: {
             id: props.id,
             restaurantName: props.restaurantName
@@ -38,7 +43,8 @@ function FoodItem(props) {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(data)
     };
@@ -56,17 +62,16 @@ function FoodItem(props) {
   }
 
   const handleEmpty = () => {
-    var username = localStorage.getItem('user');
-
     const requestOptions = {
       method: 'DELETE',
       headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Authorization' : 'Bearer ' + localStorage.getItem('token')
       }
     };
 
-    fetch(API_EMPTY_CART + username, requestOptions)
+    fetch(API_EMPTY_CART + user.username, requestOptions)
       .then(response => response.json())
       .then(response => {
         if (response.httpStatusCode !== 200)

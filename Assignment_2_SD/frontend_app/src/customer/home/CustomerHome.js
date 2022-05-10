@@ -21,17 +21,17 @@ function CustomerHome() {
   const [error, setError] = React.useState("");
 
   React.useEffect(() => {
-    if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ROLE_CUSTOMER') {
+    if(!localStorage.getItem('token') || localStorage.getItem('role') !== 'ROLE_CUSTOMER') {
       logout();
       navigate('/login');
-      return;
     }
 
     const requestOptions = {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization' : 'Bearer ' +  localStorage.getItem('token')
         }
     };
 

@@ -16,12 +16,13 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(User user) {
         this.user = user;
     }
+    public CustomUserDetails() { }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(user.getRole().equals(Role.ROLE_CUSTOMER))
-            return List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
-        return List.of(new SimpleGrantedAuthority("ROLE_ADMINISTRATOR"));
+            return Arrays.asList(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMINISTRATOR"));
     }
 
     public boolean isAdministrator() {

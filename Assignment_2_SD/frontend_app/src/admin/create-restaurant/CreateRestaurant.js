@@ -16,13 +16,14 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { OutlinedInput } from '@mui/material';
 
 import config from '../../config.json'
 import SimpleError from '../../error/SimpleError';
 import { logout } from '../../common/utils';
+import jwt from 'jwt-decode';
 
 const theme = createTheme();
+
 const API_CREATE = config.adminRoot + 'create-restaurant';
 const API_GET_ZONES = config.commonRoot + 'get-zones';
 const ERROR_TITLE = "Create Restaurant Error";
@@ -40,57 +41,57 @@ const MenuProps = {
 
 export default function CreateRestaurant() {
   let navigate = useNavigate();
-    const [open, setOpen] = React.useState(false);
-    const [error, setError] = React.useState("");
-    const [zones, setZones] = React.useState([]);
-    const [selectedZone, setZone] = React.useState([]);
+  const user = jwt(localStorage.getItem('token'));
 
-    const handleSelect = (event) => {
-      const {
-        target: { value },
-      } = event;
-      setZone(
-        // On autofill we get a stringified value.
-        typeof value === 'string' ? value.split(',') : value,
-      );
+  const [open, setOpen] = React.useState(false);
+  const [error, setError] = React.useState("");
+  const [zones, setZones] = React.useState([]);
+  const [selectedZone, setZone] = React.useState([]);
+
+  const handleSelect = (event) => {
+    const { target: { value }, } = event;
+    setZone(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
+
+  React.useEffect(() => {
+    if(!localStorage.getItem('token') || localStorage.getItem('role') !== 'ROLE_ADMINISTRATOR') {
+      logout();
+      navigate('/login');
+    }
+
+    var  requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      }
     };
 
-    React.useEffect(() => {
-      if (localStorage.getItem('user') == null) {
-        logout();
-        navigate('/login');
-        return;
-      }
+    if (zones.length == 0)
+      fetch(API_GET_ZONES, requestOptions)
+        .then(response => response.json())
+        .then(response => {
+          if (response.httpStatusCode !== 200)
+            throw new Error(response.message);
 
-      var  requestOptions = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
-      };
-
-      if (zones.length == 0)
-        fetch(API_GET_ZONES, requestOptions)
-            .then(response => response.json())
-            .then(response => {
-                if (response.httpStatusCode !== 200)
-                    throw new Error(response.message);
-
-                setZones(response.data);
-            })
-            .catch(err => {
-                setOpen(true);
-                setError(err.message);
-            });
-    })
+          setZones(response.data);
+        })
+        .catch(err => {
+          setOpen(true);
+          setError(err.message);
+        });
+  })
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
     const data = {
-      username: localStorage.getItem('user'),
+      username: user.username,
       name: formData.get('name'),
       location: formData.get('location'),
       zones: selectedZone.map(zone => ({id: zone}))
@@ -99,27 +100,25 @@ export default function CreateRestaurant() {
     const requestOptions = {
       method: 'POST',
       headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' +  localStorage.getItem('token')
       },
       body: JSON.stringify(data)
     };
 
     fetch(API_CREATE, requestOptions)
-            .then(response => response.json())
-            .then(response => {
-                if (response.httpStatusCode != 200)
-                    throw new Error(response.message);
+      .then(response => response.json())
+      .then(response => {
+        if (response.httpStatusCode != 200)
+          throw new Error(response.message);
 
-                localStorage.setItem('user', data.username);
-                localStorage.setItem('role', 'ROLE_CUSTOMER');
-
-                navigate('/admin/home');
-            })
-            .catch(err => {
-                setOpen(true);
-                setError(err.message);
-            });
+        navigate('/admin/home');
+      })
+      .catch(err => {
+        setOpen(true);
+        setError(err.message);
+      });
   };
 
   return (

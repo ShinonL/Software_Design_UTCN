@@ -35,17 +35,17 @@ function RestaurantFood() {
     };
 
     React.useEffect(() => {
-        if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ROLE_ADMINISTRATOR') {
+        if(!localStorage.getItem('token') || localStorage.getItem('role') !== 'ROLE_ADMINISTRATOR') {
             logout();
             navigate('/login');
-            return;
         }
 
         var requestOptions = {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              'Accept': 'application/json'
+              'Accept': 'application/json',
+              'Authorization' : 'Bearer ' +  localStorage.getItem('token')
             }
           };
       

@@ -1,11 +1,12 @@
 import * as React from 'react';
 
 import Divider from '@mui/material/Divider';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import { logout } from '../../common/utils';
 
 import NavBar from '../navbar/NavBar';
 import './RestaurantList.css';
@@ -19,6 +20,7 @@ const ERROR_TITLE = "Restaurants Error";
 
 function RestaurantList() {
     let location = useLocation();
+    let navigate = useNavigate();
 
     const [restaurants, setRestaurants] = React.useState([]);
     const [open, setOpen] = React.useState(false);
@@ -33,6 +35,11 @@ function RestaurantList() {
     }
 
     React.useEffect(() => {
+      if(!localStorage.getItem('token') || localStorage.getItem('role') !== 'ROLE_CUSTOMER') {
+        logout();
+        navigate('/login');
+      }
+
         var requestOptions;
         var api;
         if (filterByName === "") {
@@ -40,7 +47,8 @@ function RestaurantList() {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Authorization' : 'Bearer ' + localStorage.getItem('token')
                 }
             };
 
@@ -54,7 +62,8 @@ function RestaurantList() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Authorization' : 'Bearer ' + localStorage.getItem('token')
                 },
                 body: JSON.stringify({name: filterByName})
             };

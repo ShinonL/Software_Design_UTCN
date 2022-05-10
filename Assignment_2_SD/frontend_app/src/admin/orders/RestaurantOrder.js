@@ -50,10 +50,9 @@ export default function RestaurantOrder() {
   };
 
   React.useEffect(() => {
-    if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ROLE_ADMINISTRATOR') {
+    if(!localStorage.getItem('token') || localStorage.getItem('role') !== 'ROLE_ADMINISTRATOR') {
         logout();
         navigate('/login');
-        return;
       }
 
       var requestOptions;
@@ -68,7 +67,8 @@ export default function RestaurantOrder() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Authorization' : 'Bearer ' + localStorage.getItem('token')
             }
         };
 
@@ -95,7 +95,8 @@ const handleChangeStatus = (orderId, toDecline) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization' : 'Bearer ' +  localStorage.getItem('token')
         }, 
         body: JSON.stringify(data)
     };

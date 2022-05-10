@@ -1,4 +1,5 @@
 import * as React from 'react';
+import jwt from 'jwt-decode';
 
 import { useNavigate } from 'react-router-dom';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -37,6 +38,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function CartList() {
   let navigate = useNavigate();
+
     const [cartItems, setCartItems] = React.useState([]);
     const [zones, setZones] = React.useState([]);
     const [open, setOpen] = React.useState(false);
@@ -45,22 +47,23 @@ function CartList() {
     const [location, setLocation] = React.useState("");
     const [selectedZone, setZone] = React.useState('');
 
+    const user = jwt(localStorage.getItem('token'));
+
     React.useEffect(() => {
-      if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ROLE_CUSTOMER') {
+      if(!localStorage.getItem('token') || localStorage.getItem('role') !== 'ROLE_CUSTOMER') {
         logout();
         navigate('/login');
-        return;
-      }
-
+    }
         var  requestOptions = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Authorization' : 'Bearer ' +  localStorage.getItem('token')
             }
         };
 
-        var api = API_GET_CART + localStorage.getItem('user');
+        var api = API_GET_CART + user.username;
         
         fetch(api, requestOptions)
             .then(response => response.json())
@@ -99,7 +102,7 @@ function CartList() {
 
     const handleSubmit = () => {
       const data = {
-        username: localStorage.getItem('user'),
+        username: user.username,
         location: location,
         zoneDTO: {
           id: selectedZone
@@ -110,7 +113,8 @@ function CartList() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization' : 'Bearer ' +  localStorage.getItem('token')
         },
         body: JSON.stringify(data)
     };
@@ -131,13 +135,14 @@ function CartList() {
     }
 
     const handleEmpty = () => {
-      var username = localStorage.getItem('user');
+      var username = user.username;
   
       const requestOptions = {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization' : 'Bearer ' +  localStorage.getItem('token')
         }
       };
   

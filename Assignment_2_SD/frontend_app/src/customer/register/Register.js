@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useNavigate} from 'react-router-dom';
+import jwt from 'jwt-decode';
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -52,8 +53,8 @@ export default function SignUp() {
                 if (response.httpStatusCode != 200)
                     throw new Error(response.message);
 
-                localStorage.setItem('user', data.username);
-                localStorage.setItem('role', 'ROLE_CUSTOMER');
+                localStorage.setItem('role', jwt(response.data).role[0].authority);
+                localStorage.setItem('token', response.data);
 
                 navigate('/home');
             })
@@ -64,10 +65,10 @@ export default function SignUp() {
   };
 
   React.useEffect(() =>{
-    if (localStorage.getItem('role') === 'ROLE_CUSTOMER')
-      navigate('/home');
-    else if (localStorage.getItem('role') === 'ROLE_ADMINISTRATOR')
-      navigate('/admin/home');
+    if (localStorage.getItem('role') === 'ROLE_ADMINISTRATOR') 
+            navigate('/admin/home');
+        else if (localStorage.getItem('role') === 'ROLE_CUSTOMER') 
+            navigate('/home');
   })
 
   return (

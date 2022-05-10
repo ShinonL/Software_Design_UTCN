@@ -48,7 +48,7 @@ const AdminNavBar = () => {
                     <FormControlLabel
                         control={
                             <Switch
-                                checked={localStorage.getItem('user') !== null}
+                                checked={!localStorage.getItem('token') || localStorage.getItem('role') !== 'ROLE_CUSTOMER'}
                                 onChange={handleChange}
                                 aria-label="login switch"
                                 color='secondary'

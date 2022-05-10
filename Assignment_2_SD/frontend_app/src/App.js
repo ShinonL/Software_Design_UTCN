@@ -8,7 +8,7 @@ import CustomerHome from './customer/home/CustomerHome';
 import RestaurantList from './customer/restaurant-list/RestaurantList';
 import FoodList from './customer/food-list/FoodList';
 import CartList from './customer/cart/CartList';
-import OrderList from './customer/order/OrerList';
+import OrderList from './customer/order/OrderList';
 import NotFound from './not-found/NotFound';
 import CreateRestaurant from './admin/create-restaurant/CreateRestaurant'
 import RestaurantFood from './admin/food-list/RestaurantFood';

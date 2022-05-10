@@ -13,32 +13,34 @@ import SimpleError from '../../error/SimpleError';
 import RestaurantItem from '../../common/RestaurantItem';
 import './AdminHome.css';
 import { logout } from '../../common/utils';
+import jwt from 'jwt-decode';
 
 const API_GET_RESTAURANTS = config.adminRoot + 'get-restaurants-by-username/';
 const ERROR_TITLE = "Restaurants Error";
 
 function AdminHome() {
   let navigate = useNavigate();
+  const user = jwt(localStorage.getItem('token'));
+  
   const [restaurants, setRestaurants] = React.useState([]);
     const [open, setOpen] = React.useState(false);
     const [error, setError] = React.useState("");
 
   React.useEffect(() => {
-    if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ROLE_ADMINISTRATOR') {
-        logout();
-        navigate('/login');
-        return;
-    }
-
+    if(!localStorage.getItem('token') || localStorage.getItem('role') !== 'ROLE_ADMINISTRATOR') {
+      logout();
+      navigate('/login');
+  }
     var requestOptions = {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization' : 'Bearer ' +  localStorage.getItem('token')
       }
     };
 
-    fetch(API_GET_RESTAURANTS + localStorage.getItem('user'), requestOptions)
+    fetch(API_GET_RESTAURANTS + user.username, requestOptions)
         .then(response => response.json())
         .then(response => {
             if (response.httpStatusCode !== 200)

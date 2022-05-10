@@ -35,7 +35,8 @@ function AddFoodDialog(props) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Authorization' : 'Bearer ' +  localStorage.getItem('token')
             },
             body: JSON.stringify(data)
           };

@@ -17,6 +17,7 @@ import { formatNumber, logout } from '../../common/utils';
 import CartItem from '../cart/CartItem';
 import { Chip, Divider } from '@mui/material';
 import './OrderList.css';
+import jwt from 'jwt-decode';
 
 const ERROR_TITLE = "Orders Error";
 const API_GET_ORDERS = config.customerRoot + 'get-orders-by-user/'
@@ -31,6 +32,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function OrderList() {
     let navigate = useNavigate();
+    const user = jwt(localStorage.getItem('token'));
     
   const [expanded, setExpanded] = React.useState(false);
   const [open, setOpen] = React.useState(false);
@@ -42,21 +44,21 @@ export default function OrderList() {
   };
 
   React.useEffect(() => {
-    if (localStorage.getItem('user') == null || localStorage.getItem('role') !== 'ROLE_CUSTOMER') {
-        logout();
-        navigate('/login');
-        return;
-      }
+    if(!localStorage.getItem('token') || localStorage.getItem('role') !== 'ROLE_CUSTOMER') {
+      logout();
+      navigate('/login');
+    }
 
     var requestOptions = {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authorization' : 'Bearer ' +  localStorage.getItem('token')
         }
     };
 
-    fetch(API_GET_ORDERS + localStorage.getItem('user'), requestOptions)
+    fetch(API_GET_ORDERS + user.username, requestOptions)
         .then(response => response.json())
         .then(response => {
             if (response.httpStatusCode !== 200)
