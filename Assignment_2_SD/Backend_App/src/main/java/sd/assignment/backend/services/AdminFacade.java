@@ -7,6 +7,7 @@ import sd.assignment.backend.dtos.OrderDTO;
 import sd.assignment.backend.dtos.RestaurantDTO;
 import sd.assignment.backend.dtos.UserDTO;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Service
@@ -50,5 +51,9 @@ public class AdminFacade {
 
     public List<RestaurantDTO> getRestaurantsByUsername(String username) throws Exception {
         return restaurantService.getRestaurantsByUsername(username);
+    }
+
+    public void createPdfOfRestaurantMenu(String restaurantId, HttpServletResponse response) throws Exception {
+        foodService.createPdfOfRestaurantMenu(restaurantId, response);
     }
 }

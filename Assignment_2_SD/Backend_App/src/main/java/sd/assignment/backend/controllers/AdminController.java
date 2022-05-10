@@ -12,6 +12,7 @@ import sd.assignment.backend.dtos.*;
 import sd.assignment.backend.response.ApiResponse;
 import sd.assignment.backend.services.AdminFacade;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Slf4j
@@ -208,6 +209,29 @@ public class AdminController {
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)
                     .build();
+        }
+    }
+
+    @GetMapping("/generate-menu-pdf/{restaurantId}")
+    public void generateMenuPdf(@PathVariable String restaurantId, HttpServletResponse response) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "AdminController::generateMenuPdf");
+
+        try {
+            logger.info("Generating a menu .pdf for restaurant " + restaurantId);
+            response.setContentType("application/pdf");
+            String headerKey = "Content-Disposition";
+            String headerValue = "attachment; filename=Menu_" + restaurantId + ".pdf";
+            response.setHeader(headerKey, headerValue);
+            adminFacade.createPdfOfRestaurantMenu(restaurantId, response);
+
+            logger.info("Successfully generated a menu .pdf for restaurant " + restaurantId);
+            return;
+
+        } catch (Exception ex) {
+            logger.info("Error generating a menu .pdf for restaurant " + restaurantId);
+            logger.error(ex.getMessage());
+            return;
         }
     }
 }

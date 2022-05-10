@@ -11,8 +11,10 @@ import { logout } from '../../common/utils';
 import Food from './Food';
 import { Button } from '@mui/material';
 import AddFoodDialog from './AddFoodDialog';
+import jspdf from "jspdf";
 
 const API_GET_FOODS = config.adminRoot + 'get-foods/';
+const API_GENERATE_PDF = config.adminRoot + 'generate-menu-pdf/';
 const ERROR_TITLE = "Food Error";
 export const PlusCircleIcon = ({width}) => <svg width={width}  fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" fillRule="evenodd"></path></svg>
 
@@ -32,6 +34,33 @@ function RestaurantFood() {
                 restaurantId: location.state.restaurantId
             }
         })
+    };
+
+    const generatePdf = (event) => {
+        event.preventDefault();
+        var requestOptions = {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization' : 'Bearer ' +  localStorage.getItem('token')
+            }
+          };
+
+          fetch(API_GENERATE_PDF + location.state.restaurantId, requestOptions)
+              .then(response => response.blob())
+              .then(response => {
+                const url = window.URL.createObjectURL(response);
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Menu.pdf'); 
+                document.body.appendChild(link);
+                link.click();
+              })
+              .catch(err => {
+                  setOpen(true);
+                  setError(err.message);
+              });
     };
 
     React.useEffect(() => {
@@ -103,6 +132,12 @@ function RestaurantFood() {
             onClick={seeOrders}
             className="btn btn-primary btn-sm mr-2 mb-1">
             Restaurant Orders
+        </Button>
+
+        <Button 
+            onClick={generatePdf}
+            className="btn btn-primary btn-sm mr-2 mb-1">
+            Generate PDF Menu
         </Button>
         <Divider />
           

@@ -12,7 +12,10 @@ import sd.assignment.backend.entities.Restaurant;
 import sd.assignment.backend.repositories.FoodRepository;
 import sd.assignment.backend.repositories.RestaurantRepository;
 import sd.assignment.backend.validators.FoodValidator;
+import com.lowagie.text.*;
+import com.lowagie.text.pdf.PdfWriter;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -80,5 +83,52 @@ public class FoodService {
                 .stream()
                 .map(FoodMapper::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Creates a document containing the foods of a given restaurant
+     * @param restaurantId The DB id of a specific restaurant
+     * @param response the http response to which the document will be attached
+     * @throws Exception if there is anything wrong with the file operations
+     */
+    public void createPdfOfRestaurantMenu(String restaurantId, HttpServletResponse response) throws Exception {
+        List<FoodDTO> foods = getFoodsByRestaurant(restaurantId);
+
+        Document document = new Document(PageSize.A4);
+        PdfWriter.getInstance(document, response.getOutputStream());
+
+        document.open();
+
+        Font fontTitle = FontFactory.getFont(FontFactory.TIMES_ROMAN);
+        fontTitle.setSize(20);
+
+        Paragraph title = new Paragraph("Menu for restaurant with id " + restaurantId, fontTitle);
+        title.setAlignment(Paragraph.ALIGN_CENTER);
+        document.add(title);
+
+        Font fontFoodName = FontFactory.getFont(FontFactory.TIMES_ROMAN);
+        fontFoodName.setSize(18);
+
+        Font fontFoodDetails = FontFactory.getFont(FontFactory.TIMES_ROMAN);
+        fontFoodDetails.setSize(14);
+
+        for(FoodDTO food: foods){
+            Paragraph foodTitle = new Paragraph(food.getName() + "\n", fontFoodName);
+            foodTitle.setAlignment(Paragraph.ALIGN_LEFT);
+            document.add(foodTitle);
+
+            Paragraph foodDescription = new Paragraph("Category: " + food.getCategory() + "\n", fontFoodDetails);
+            foodDescription.setAlignment(Paragraph.ALIGN_LEFT);
+            document.add(foodDescription);
+
+            foodDescription = new Paragraph("Description: " + food.getDescription() + "\n", fontFoodDetails);
+            foodDescription.setAlignment(Paragraph.ALIGN_LEFT);
+            document.add(foodDescription);
+
+            foodDescription = new Paragraph("Price: " + food.getPrice() + "\n", fontFoodDetails);
+            foodDescription.setAlignment(Paragraph.ALIGN_LEFT);
+            document.add(foodDescription);
+        }
+        document.close();
     }
 }
