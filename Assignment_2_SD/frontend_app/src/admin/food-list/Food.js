@@ -14,7 +14,7 @@ function Food(props) {
         <CardMedia
           component="img"
           height="140"
-          image="https://source.unsplash.com/300x300/?food"
+          image="https://source.unsplash.com/600x600/?food"
         />
         <CardContent>
         <Typography gutterBottom variant="h5" component="div">

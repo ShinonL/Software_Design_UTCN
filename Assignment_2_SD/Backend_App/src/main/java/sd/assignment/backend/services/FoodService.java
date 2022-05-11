@@ -43,6 +43,14 @@ public class FoodService {
      */
     private final Logger logger = LoggerFactory.getLogger(FoodService.class);
 
+    public void setFoodRepository(FoodRepository foodRepository) {
+        this.foodRepository = foodRepository;
+    }
+
+    public void setRestaurantRepository(RestaurantRepository restaurantRepository) {
+        this.restaurantRepository = restaurantRepository;
+    }
+
     /**
      * Validate and create a food item for a specific restaurant
      * @param foodDTO Contains details about the food and its restaurant
