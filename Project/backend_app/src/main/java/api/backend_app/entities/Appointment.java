@@ -33,7 +33,7 @@ public final class Appointment {
     private Pet pet;
 
     @ManyToMany(mappedBy = "appointments", fetch = FetchType.EAGER)
-    private List<Service> services;
+    private List<Facility> facilities;
 
     @OneToMany(mappedBy = "appointment")
     private List<Result> results;

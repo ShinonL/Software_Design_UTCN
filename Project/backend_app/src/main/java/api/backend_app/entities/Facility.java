@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "service")
+@Table(name = "facility")
 @Getter
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-public final class Service {
+public final class Facility {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -38,8 +38,8 @@ public final class Service {
     private int noAppointments = 0;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "service_appointment",
-            joinColumns = @JoinColumn(name = "service_id"),
+    @JoinTable(name = "facility_appointment",
+            joinColumns = @JoinColumn(name = "facility_id"),
             inverseJoinColumns = @JoinColumn(name = "appointment_id"))
     private List<Appointment> appointments;
 

@@ -25,7 +25,7 @@ public final class Adoption {
     private Boolean adopted = false;
 
     @Column(nullable = false)
-    private String decription;
+    private String description;
 
     @Column(nullable = false)
     private LocalDate rescueDate;
