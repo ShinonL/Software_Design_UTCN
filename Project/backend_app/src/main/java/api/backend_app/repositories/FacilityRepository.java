@@ -1,4 +1,8 @@
 package api.backend_app.repositories;
 
-public class FacilityRepository {
+import api.backend_app.entities.Facility;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FacilityRepository extends JpaRepository<Facility, String> {
+    Facility findByName(String name);
 }
