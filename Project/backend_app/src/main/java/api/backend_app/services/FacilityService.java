@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class FacilityService {
     /**
-     * The zone repository deals with running sql commands specific to the `facility` table
+     * The facility repository deals with running sql commands specific to the `facility` table
      */
     @Autowired
     private FacilityRepository facilityRepository;

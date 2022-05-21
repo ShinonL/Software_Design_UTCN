@@ -1,5 +1,6 @@
 package api.backend_app.entities;
 
+import api.backend_app.common.enums.AppointmentState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,8 @@ public final class Appointment {
     @Column(nullable = false)
     private LocalDateTime dateTime;
 
-    @Column(nullable = false)
-    private Boolean completed = false;
+    @Enumerated(EnumType.STRING)
+    private AppointmentState appointmentState;
 
     @ManyToOne
     @JoinColumn(name = "pet_id")

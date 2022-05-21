@@ -34,6 +34,7 @@ public class WebAppConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/**", "/public/**").permitAll()
                 .antMatchers("/employee/**").hasRole("EMPLOYEE")
                 .antMatchers("/customer/**").hasRole("CUSTOMER")
+                .antMatchers("/common/**").hasAnyRole("EMPLOYEE", "CUSTOMER")
             .anyRequest().authenticated()
             .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

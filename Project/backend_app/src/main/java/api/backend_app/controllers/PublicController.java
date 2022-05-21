@@ -1,8 +1,10 @@
 package api.backend_app.controllers;
 
 import api.backend_app.dtos.FacilityDTO;
+import api.backend_app.dtos.PetTypeDTO;
 import api.backend_app.response.ApiResponse;
 import api.backend_app.services.FacilityService;
+import api.backend_app.services.PetService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +22,15 @@ import java.util.List;
 public class PublicController {
     @Autowired
     private FacilityService facilityService;
+    @Autowired
+    private PetService petService;
 
     private final Logger logger = LoggerFactory.getLogger(PublicController.class);
 
     @GetMapping("/find-facilities")
     public ResponseEntity<ApiResponse> findFacilities() {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Responded", "EmployeeController::createFacility");
+        httpHeaders.add("Responded", "PublicController::findFacilities");
 
         try {
             logger.info("Retrieving all facilities.");
@@ -41,6 +45,31 @@ public class PublicController {
 
         } catch (Exception ex) {
             logger.info("Error retrieving all facilities");
+            logger.error(ex.getMessage());
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
+                    .withHttpHeader(httpHeaders)
+                    .build();
+        }
+    }
+
+    @GetMapping("/find-pet-types")
+    public ResponseEntity<ApiResponse> findPetTypes() {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "PublicController::findPetTypes");
+
+        try {
+            logger.info("Retrieving all pet types.");
+            List<PetTypeDTO> petTypeDTOS = petService.findPetTypes();
+
+            logger.info("Successfully retrieved all pet types");
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(),
+                    "Successfully retrieved all pet types")
+                    .withHttpHeader(httpHeaders)
+                    .withData(petTypeDTOS)
+                    .build();
+
+        } catch (Exception ex) {
+            logger.info("Error retrieving all pet types");
             logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)

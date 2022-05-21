@@ -1,10 +1,10 @@
 package api.backend_app.repositories;
 
-import api.backend_app.entities.Facility;
+import api.backend_app.entities.PetType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FacilityRepository extends JpaRepository<Facility, String> {
-    Facility findByName(String name);
+public interface PetTypeRepository extends JpaRepository<PetType, String> {
+    PetType findByType(String type);
 }
