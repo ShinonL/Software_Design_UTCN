@@ -20,11 +20,11 @@ public final class Result {
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
 
-    @Column(nullable = false, columnDefinition = "nvarchar(max) default 'N/A'")
-    private String observation;
+    @Column(nullable = false)
+    private String observation = "N/A";
 
-    @Column(nullable = false, columnDefinition = "nvarchar(max) default 'N/A'")
-    private String details;
+    @Column(nullable = false)
+    private String details = "N/A";
 
     @ManyToOne
     @JoinColumn(name = "appointment_id")

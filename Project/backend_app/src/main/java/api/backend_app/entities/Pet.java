@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import sd.assignment.backend.entities.User;
 
 import javax.persistence.*;
 import java.util.List;

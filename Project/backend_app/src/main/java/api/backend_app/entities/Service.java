@@ -31,11 +31,11 @@ public final class Service {
     @Column(nullable = false)
     private Double price;
 
-    @Column(nullable = false, columnDefinition = "real default 0")
-    private Double score;
+    @Column(nullable = false)
+    private Double score = 0.0;
 
-    @Column(nullable = false, columnDefinition = "integer default 0")
-    private int noAppointments;
+    @Column(nullable = false)
+    private int noAppointments = 0;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "service_appointment",

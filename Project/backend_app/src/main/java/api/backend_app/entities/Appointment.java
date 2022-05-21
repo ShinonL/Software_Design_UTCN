@@ -25,8 +25,8 @@ public final class Appointment {
     @Column(nullable = false)
     private LocalDateTime dateTime;
 
-    @Column(nullable = false, columnDefinition = "boolean default false")
-    private Boolean completed;
+    @Column(nullable = false)
+    private Boolean completed = false;
 
     @ManyToOne
     @JoinColumn(name = "pet_id")

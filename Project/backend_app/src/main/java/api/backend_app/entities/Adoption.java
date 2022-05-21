@@ -21,8 +21,8 @@ public final class Adoption {
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
 
-    @Column(nullable = false, columnDefinition = "boolean default false")
-    private Boolean adopted;
+    @Column(nullable = false)
+    private Boolean adopted = false;
 
     @Column(nullable = false)
     private String decription;

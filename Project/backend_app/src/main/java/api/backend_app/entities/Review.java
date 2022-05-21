@@ -20,11 +20,11 @@ public final class Review {
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
 
-    @Column(nullable = false, columnDefinition = "integer default 0")
-    private int score;
+    @Column(nullable = false)
+    private int score = 0;
 
-    @Column(nullable = false, columnDefinition = "nvarchar(max) default 'N/A'")
-    private String text;
+    @Column(nullable = false)
+    private String text = "N/A";
 
     @ManyToOne
     @JoinColumn(name = "appointment_id")

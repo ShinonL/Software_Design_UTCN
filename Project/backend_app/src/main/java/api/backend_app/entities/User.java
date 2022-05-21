@@ -1,7 +1,6 @@
-package sd.assignment.backend.entities;
+package api.backend_app.entities;
 
 import api.backend_app.common.enums.Role;
-import api.backend_app.entities.Pet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
