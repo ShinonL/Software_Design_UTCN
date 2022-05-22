@@ -44,7 +44,7 @@ public class AppointmentService {
 
 
 
-        Appointment appointment = AppointmentMapper.convertToEntity(appointmentDTO);
+        Appointment appointment = AppointmentMapper.convertToEntity(appointmentDTO, null);
 
         logger.info("Saving the facility details");
         appointmentRepository.save(appointment);

@@ -17,7 +17,7 @@ public class AppointmentDTO {
     private String id;
     private LocalDateTime dateTime;
     private AppointmentState appointmentState;
-    private Pet pet;
+    private String petId;
     private List<Facility> facilities;
     private List<Result> results;
     private List<Review> reviews;

@@ -1,5 +1,6 @@
 package api.backend_app.controllers;
 
+import api.backend_app.dtos.PetDTO;
 import api.backend_app.dtos.PetTypeDTO;
 import api.backend_app.response.ApiResponse;
 import api.backend_app.services.PetService;
@@ -41,6 +42,30 @@ public class CommonController {
 
         } catch (Exception ex) {
             logger.info("Error creating pet type " + petTypeDTO.getType());
+            logger.error(ex.getMessage());
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
+                    .withHttpHeader(httpHeaders)
+                    .build();
+        }
+    }
+
+    @PostMapping("/create-pet")
+    public ResponseEntity<ApiResponse> createPet(@RequestBody PetDTO petDTO) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "CommonController::createPetType");
+
+        try {
+            logger.info("Creating pet " + petDTO.getName());
+            petService.createPet(petDTO);
+
+            logger.info("Successfully created pet " + petDTO.getName());
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(),
+                    "Successfully added pet " + petDTO.getName())
+                    .withHttpHeader(httpHeaders)
+                    .build();
+
+        } catch (Exception ex) {
+            logger.info("Error creating pet " + petDTO.getName());
             logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)

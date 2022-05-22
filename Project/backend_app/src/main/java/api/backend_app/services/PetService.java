@@ -1,12 +1,20 @@
 package api.backend_app.services;
 
+import api.backend_app.common.exceptions.InvalidDataException;
+import api.backend_app.common.exceptions.NotFoundException;
 import api.backend_app.common.mappers.FacilityMapper;
+import api.backend_app.common.mappers.PetMapper;
 import api.backend_app.common.mappers.PetTypeMapper;
 import api.backend_app.dtos.FacilityDTO;
+import api.backend_app.dtos.PetDTO;
 import api.backend_app.dtos.PetTypeDTO;
 import api.backend_app.entities.Facility;
+import api.backend_app.entities.Pet;
 import api.backend_app.entities.PetType;
+import api.backend_app.entities.User;
+import api.backend_app.repositories.PetRepository;
 import api.backend_app.repositories.PetTypeRepository;
+import api.backend_app.repositories.UserRepository;
 import api.backend_app.validators.FacilityValidator;
 import api.backend_app.validators.PetValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -30,6 +39,16 @@ public class PetService {
      */
     @Autowired
     private PetTypeRepository petTypeRepository;
+    /**
+     * The pet repository deals with running sql commands specific to the `pet` table
+     */
+    @Autowired
+    private PetRepository petRepository;
+    /**
+     * The user repository deals with running sql commands specific to the `user` table
+     */
+    @Autowired
+    private UserRepository userRepository;
     /**
      * Used for logging the steps taken.
      */
@@ -46,7 +65,7 @@ public class PetService {
 
         PetType petType = PetTypeMapper.convertToEntity(petTypeDTO, Collections.emptyList(), Collections.emptyList());
 
-        logger.info("Saving the facility details");
+        logger.info("Saving the pet type details");
         petTypeRepository.save(petType);
     }
 
@@ -60,6 +79,43 @@ public class PetService {
         return petTypeRepository.findAll()
                 .stream()
                 .map(PetTypeMapper::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Create a new pet type with the given details
+     * @param petDTO the details of the new facility
+     * @throws Exception if any o the details are invalid or if it couldn't access the DB
+     */
+    public void createPet(PetDTO petDTO) throws Exception {
+        logger.info("Validating the pet type details");
+        PetValidator.isPetValid(petDTO);
+
+        Optional<PetType> petType = petTypeRepository.findById(petDTO.getPetType().getId());
+        if (petType.isEmpty())
+            throw new NotFoundException("This pet type does not exist.");
+
+        User user = userRepository.findByUsername(petDTO.getUser().getUsername());
+        if (user == null)
+            throw new NotFoundException("This user does not exist.");
+
+        Pet pet = PetMapper.convertToEntity(petDTO, user, Collections.emptyList(), petType.get());
+
+        logger.info("Saving the pet details");
+        petRepository.save(pet);
+    }
+
+    /**
+     * Retrieve all pet for a specific user
+     * @param username the username of the pet owner
+     * @return a list with all pets of that user
+     * @throws Exception if there is any problem with the DB connection
+     */
+    public List<PetDTO> findPetByUsername(String username) throws Exception {
+        logger.info("Retrieving all pets for user " + username);
+        return petRepository.findByUsername(username)
+                .stream()
+                .map(PetMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
 }
