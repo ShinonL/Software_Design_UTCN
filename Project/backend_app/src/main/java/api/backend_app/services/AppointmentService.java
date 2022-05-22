@@ -5,15 +5,20 @@ import api.backend_app.common.exceptions.InvalidDataException;
 import api.backend_app.common.exceptions.NotFoundException;
 import api.backend_app.common.mappers.AppointmentMapper;
 import api.backend_app.common.mappers.PetMapper;
+import api.backend_app.common.mappers.ResultMapper;
 import api.backend_app.dtos.AppointmentDTO;
 import api.backend_app.dtos.PetDTO;
+import api.backend_app.dtos.ResultDTO;
 import api.backend_app.entities.Appointment;
 import api.backend_app.entities.Facility;
 import api.backend_app.entities.Pet;
+import api.backend_app.entities.Result;
 import api.backend_app.repositories.AppointmentRepository;
 import api.backend_app.repositories.FacilityRepository;
 import api.backend_app.repositories.PetRepository;
+import api.backend_app.repositories.ResultRepository;
 import api.backend_app.validators.AppointmentValidator;
+import api.backend_app.validators.ResultValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +51,11 @@ public class AppointmentService {
      */
     @Autowired
     private FacilityRepository facilityRepository;
+    /**
+     * The result repository deals with running sql commands specific to the `result` table
+     */
+    @Autowired
+    private ResultRepository resultRepository;
     /**
      * Used for logging the steps taken.
      */
@@ -108,6 +118,27 @@ public class AppointmentService {
                 .stream()
                 .map(AppointmentMapper::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Create a new result with the given details
+     * @param resultDTO the details of the new result
+     * @throws Exception if any of the details are invalid or if it couldn't access the DB
+     */
+    public void addResultToAppointment(ResultDTO resultDTO) throws Exception {
+        logger.info("Validating the result details");
+        ResultValidator.isResultValid(resultDTO);
+
+        Optional<Appointment> appointment = appointmentRepository.findById(resultDTO.getAppointmentId());
+        if (appointment.isEmpty()) {
+            logger.error("Appointment " + resultDTO.getAppointmentId() + " was not found");
+            throw new NotFoundException("Appointment was not found.");
+        }
+
+        Result result = ResultMapper.convertToEntity(resultDTO, appointment.get());
+
+        logger.info("Saving the result details");
+        resultRepository.save(result);
     }
 
     /**

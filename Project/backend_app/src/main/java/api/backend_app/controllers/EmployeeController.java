@@ -2,6 +2,7 @@ package api.backend_app.controllers;
 
 import api.backend_app.dtos.AppointmentDTO;
 import api.backend_app.dtos.FacilityDTO;
+import api.backend_app.dtos.ResultDTO;
 import api.backend_app.response.ApiResponse;
 import api.backend_app.services.AppointmentService;
 import api.backend_app.services.FacilityService;
@@ -93,6 +94,29 @@ public class EmployeeController {
 
         } catch (Exception ex) {
             logger.error("Error changing status for appointment " + appointmentDTO.getId());
+            logger.error(ex.getMessage());
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
+                    .withHttpHeader(httpHeaders)
+                    .build();
+        }
+    }
+
+    @PostMapping("/add-result")
+    public ResponseEntity<ApiResponse> addResultToAppointment(@RequestBody ResultDTO resultDTO) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "EmployeeController::addResultToAppointment");
+
+        try {
+            logger.info("Adding result for appointment " + resultDTO.getAppointmentId());
+            appointmentService.addResultToAppointment(resultDTO);
+
+            logger.info("Successfully added result for appointment " + resultDTO.getAppointmentId());
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(), "Successfully added result.")
+                    .withHttpHeader(httpHeaders)
+                    .build();
+
+        } catch (Exception ex) {
+            logger.error("Error adding result for appointment " + resultDTO.getAppointmentId());
             logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)
