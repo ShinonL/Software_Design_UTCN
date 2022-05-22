@@ -1,10 +1,6 @@
 package api.backend_app.dtos;
 
 import api.backend_app.common.enums.AppointmentState;
-import api.backend_app.entities.Facility;
-import api.backend_app.entities.Pet;
-import api.backend_app.entities.Result;
-import api.backend_app.entities.Review;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +14,7 @@ public class AppointmentDTO {
     private LocalDateTime dateTime;
     private AppointmentState appointmentState;
     private String petId;
-    private List<Facility> facilities;
-    private List<Result> results;
-    private List<Review> reviews;
+    private List<FacilityDTO> facilities;
+    private List<ResultDTO> results;
+    private List<ReviewDTO> reviews;
 }

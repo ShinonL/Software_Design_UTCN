@@ -92,12 +92,16 @@ public class PetService {
         PetValidator.isPetValid(petDTO);
 
         Optional<PetType> petType = petTypeRepository.findById(petDTO.getPetType().getId());
-        if (petType.isEmpty())
+        if (petType.isEmpty()) {
+            logger.error("This pet type does not exist.");
             throw new NotFoundException("This pet type does not exist.");
+        }
 
         User user = userRepository.findByUsername(petDTO.getUser().getUsername());
-        if (user == null)
+        if (user == null) {
+            logger.error("This user does not exist.");
             throw new NotFoundException("This user does not exist.");
+        }
 
         Pet pet = PetMapper.convertToEntity(petDTO, user, Collections.emptyList(), petType.get());
 
