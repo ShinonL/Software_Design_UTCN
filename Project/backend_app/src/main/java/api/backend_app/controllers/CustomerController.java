@@ -38,15 +38,15 @@ public class CustomerController {
             logger.info("Retrieving all pets for user " + username);
             List<PetDTO> petDTOS = petService.findPetByUsername(username);
 
-            logger.info("Successfully retrieved all pet for user " + username);
+            logger.info("Successfully retrieved all pets for user " + username);
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(),
-                    "Successfully retrieved all pet for user " + username)
+                    "Successfully retrieved all pets for user " + username)
                     .withHttpHeader(httpHeaders)
                     .withData(petDTOS)
                     .build();
 
         } catch (Exception ex) {
-            logger.info("Error retrieving all pet for user " + username);
+            logger.info("Error retrieving all pets for user " + username);
             logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)
@@ -71,6 +71,31 @@ public class CustomerController {
 
         } catch (Exception ex) {
             logger.info("Error creating appointment");
+            logger.error(ex.getMessage());
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
+                    .withHttpHeader(httpHeaders)
+                    .build();
+        }
+    }
+
+    @GetMapping("/find-appointments/{username}")
+    public ResponseEntity<ApiResponse> findAppointmentByUsername(@PathVariable String username) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "CustomerController::findAppointmentByUsername");
+
+        try {
+            logger.info("Retrieving all appointments for user " + username);
+            List<AppointmentDTO> appointmentDTOS = appointmentService.findAppointmentByUsername(username);
+
+            logger.info("Successfully retrieved all appointments for user " + username);
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(),
+                    "Successfully retrieved all appointments for user " + username)
+                    .withHttpHeader(httpHeaders)
+                    .withData(appointmentDTOS)
+                    .build();
+
+        } catch (Exception ex) {
+            logger.info("Error retrieving all appointments for user " + username);
             logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)

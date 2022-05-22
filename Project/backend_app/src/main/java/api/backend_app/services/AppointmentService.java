@@ -3,7 +3,9 @@ package api.backend_app.services;
 import api.backend_app.common.enums.AppointmentState;
 import api.backend_app.common.exceptions.NotFoundException;
 import api.backend_app.common.mappers.AppointmentMapper;
+import api.backend_app.common.mappers.PetMapper;
 import api.backend_app.dtos.AppointmentDTO;
+import api.backend_app.dtos.PetDTO;
 import api.backend_app.entities.Appointment;
 import api.backend_app.entities.Facility;
 import api.backend_app.entities.Pet;
@@ -77,5 +79,33 @@ public class AppointmentService {
 
         logger.info("Saving the facility details");
         appointmentRepository.save(appointment);
+    }
+
+    /**
+     * Retrieve all appointments for a specific user
+     * @param username the username of the pet owner
+     * @return a list with all appointments of that user
+     * @throws Exception if there is any problem with the DB connection
+     */
+    public List<AppointmentDTO> findAppointmentByUsername(String username) throws Exception {
+        logger.info("Retrieving all appointments for user " + username);
+        return appointmentRepository.findByUsername(username)
+                .stream()
+                .map(AppointmentMapper::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Retrieve all appointments for a specific facility id
+     * @param facilityId the id of the facility we are looking for
+     * @return a list with all appointments of that facility
+     * @throws Exception if there is any problem with the DB connection
+     */
+    public List<AppointmentDTO> findAppointmentByFacility(String facilityId) throws Exception {
+        logger.info("Retrieving all appointments for facility " + facilityId);
+        return appointmentRepository.findByFacility(facilityId)
+                .stream()
+                .map(AppointmentMapper::convertToDTO)
+                .collect(Collectors.toList());
     }
 }
