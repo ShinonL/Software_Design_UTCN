@@ -52,7 +52,7 @@ public class PetService {
     /**
      * Used for logging the steps taken.
      */
-    private final Logger logger = LoggerFactory.getLogger(UserService.class);
+    private final Logger logger = LoggerFactory.getLogger(PetService.class);
 
     /**
      * Create a new pet type with the given details

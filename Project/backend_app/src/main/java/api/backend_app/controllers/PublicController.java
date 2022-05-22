@@ -1,9 +1,11 @@
 package api.backend_app.controllers;
 
 import api.backend_app.dtos.FacilityDTO;
+import api.backend_app.dtos.HealthReferenceDTO;
 import api.backend_app.dtos.PetTypeDTO;
 import api.backend_app.response.ApiResponse;
 import api.backend_app.services.FacilityService;
+import api.backend_app.services.HealthReferenceService;
 import api.backend_app.services.PetService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -24,6 +26,8 @@ public class PublicController {
     private FacilityService facilityService;
     @Autowired
     private PetService petService;
+    @Autowired
+    private HealthReferenceService healthReferenceService;
 
     private final Logger logger = LoggerFactory.getLogger(PublicController.class);
 
@@ -70,6 +74,31 @@ public class PublicController {
 
         } catch (Exception ex) {
             logger.info("Error retrieving all pet types");
+            logger.error(ex.getMessage());
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
+                    .withHttpHeader(httpHeaders)
+                    .build();
+        }
+    }
+
+    @GetMapping("/find-health-references/{petTypeId}")
+    public ResponseEntity<ApiResponse> findHealthReferencesByPetType(@PathVariable String petTypeId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "PublicController::findHealthReferencesByPetType");
+
+        try {
+            logger.info("Retrieving all health references for a specific pet type.");
+            List<HealthReferenceDTO> healthReferenceDTOS = healthReferenceService.findHealthReferencesByPetType(petTypeId);
+
+            logger.info("Successfully retrieved all health references for a specific pet type.");
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(),
+                    "Successfully retrieved all health references for a specific pet type.")
+                    .withHttpHeader(httpHeaders)
+                    .withData(healthReferenceDTOS)
+                    .build();
+
+        } catch (Exception ex) {
+            logger.info("Error retrieving all health references for a specific pet type.");
             logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)

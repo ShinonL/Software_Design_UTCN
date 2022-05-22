@@ -2,10 +2,12 @@ package api.backend_app.controllers;
 
 import api.backend_app.dtos.AppointmentDTO;
 import api.backend_app.dtos.FacilityDTO;
+import api.backend_app.dtos.HealthReferenceDTO;
 import api.backend_app.dtos.ResultDTO;
 import api.backend_app.response.ApiResponse;
 import api.backend_app.services.AppointmentService;
 import api.backend_app.services.FacilityService;
+import api.backend_app.services.HealthReferenceService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,8 @@ public class EmployeeController {
     private FacilityService facilityService;
     @Autowired
     private AppointmentService appointmentService;
+    @Autowired
+    private HealthReferenceService healthReferenceService;
 
     private final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
@@ -117,6 +121,29 @@ public class EmployeeController {
 
         } catch (Exception ex) {
             logger.error("Error adding result for appointment " + resultDTO.getAppointmentId());
+            logger.error(ex.getMessage());
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
+                    .withHttpHeader(httpHeaders)
+                    .build();
+        }
+    }
+
+    @PostMapping("/create-health-reference")
+    public ResponseEntity<ApiResponse> createHealthReference(@RequestBody HealthReferenceDTO healthReferenceDTO) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "EmployeeController::createHealthReference");
+
+        try {
+            logger.info("Creating health reference");
+            healthReferenceService.createHealthReference(healthReferenceDTO);
+
+            logger.info("Successfully created health reference");
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(), "Successfully created health reference")
+                    .withHttpHeader(httpHeaders)
+                    .build();
+
+        } catch (Exception ex) {
+            logger.error("Error creating health reference");
             logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)
