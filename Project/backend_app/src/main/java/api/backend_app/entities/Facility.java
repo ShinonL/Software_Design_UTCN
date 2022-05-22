@@ -43,6 +43,9 @@ public final class Facility {
             inverseJoinColumns = @JoinColumn(name = "appointment_id"))
     private List<Appointment> appointments;
 
+    @OneToMany(mappedBy = "facility")
+    private List<Review> reviews;
+
     public void addAppointment(Appointment appointment) {
         if (appointments == null)
             appointments = new ArrayList<>();

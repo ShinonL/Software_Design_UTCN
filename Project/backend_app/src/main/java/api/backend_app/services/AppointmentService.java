@@ -6,19 +6,16 @@ import api.backend_app.common.exceptions.NotFoundException;
 import api.backend_app.common.mappers.AppointmentMapper;
 import api.backend_app.common.mappers.PetMapper;
 import api.backend_app.common.mappers.ResultMapper;
+import api.backend_app.common.mappers.ReviewMapper;
 import api.backend_app.dtos.AppointmentDTO;
 import api.backend_app.dtos.PetDTO;
 import api.backend_app.dtos.ResultDTO;
-import api.backend_app.entities.Appointment;
-import api.backend_app.entities.Facility;
-import api.backend_app.entities.Pet;
-import api.backend_app.entities.Result;
-import api.backend_app.repositories.AppointmentRepository;
-import api.backend_app.repositories.FacilityRepository;
-import api.backend_app.repositories.PetRepository;
-import api.backend_app.repositories.ResultRepository;
+import api.backend_app.dtos.ReviewDTO;
+import api.backend_app.entities.*;
+import api.backend_app.repositories.*;
 import api.backend_app.validators.AppointmentValidator;
 import api.backend_app.validators.ResultValidator;
+import api.backend_app.validators.ReviewValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +80,7 @@ public class AppointmentService {
         appointmentDTO.setAppointmentState(AppointmentState.PENDING);
 
         Appointment appointment = AppointmentMapper.convertToEntity(
-                appointmentDTO, pet.get(), facilities, Collections.emptyList(), Collections.emptyList()
+                appointmentDTO, pet.get(), facilities, Collections.emptyList()
         );
 
         facilities.forEach(facility -> facility.addAppointment(appointment));

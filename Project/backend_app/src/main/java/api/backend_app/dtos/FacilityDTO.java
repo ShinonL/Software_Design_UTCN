@@ -17,4 +17,5 @@ public class FacilityDTO {
     private Double score;
     private int noAppointments;
     private List<String> appointmentIds;
+    private List<ReviewDTO> reviews;
 }

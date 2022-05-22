@@ -27,6 +27,6 @@ public final class Review {
     private String text = "N/A";
 
     @ManyToOne
-    @JoinColumn(name = "appointment_id")
-    private Appointment appointment;
+    @JoinColumn(name = "facility_id")
+    private Facility facility;
 }

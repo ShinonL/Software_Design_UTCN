@@ -1,11 +1,9 @@
 package api.backend_app.controllers;
 
-import api.backend_app.dtos.AppointmentDTO;
-import api.backend_app.dtos.FacilityDTO;
-import api.backend_app.dtos.PetDTO;
-import api.backend_app.dtos.PetTypeDTO;
+import api.backend_app.dtos.*;
 import api.backend_app.response.ApiResponse;
 import api.backend_app.services.AppointmentService;
+import api.backend_app.services.FacilityService;
 import api.backend_app.services.PetService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -26,6 +24,8 @@ public class CustomerController {
     private PetService petService;
     @Autowired
     private AppointmentService appointmentService;
+    @Autowired
+    private FacilityService facilityService;
 
     private final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
@@ -96,6 +96,29 @@ public class CustomerController {
 
         } catch (Exception ex) {
             logger.info("Error retrieving all appointments for user " + username);
+            logger.error(ex.getMessage());
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
+                    .withHttpHeader(httpHeaders)
+                    .build();
+        }
+    }
+
+    @PostMapping("/add-review")
+    public ResponseEntity<ApiResponse> addReviewToFacility(@RequestBody ReviewDTO reviewDTO) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "CustomerController::addReviewToFacility");
+
+        try {
+            logger.info("Adding review for facility " + reviewDTO.getFacilityId());
+            facilityService.addReviewToFacility(reviewDTO);
+
+            logger.info("Successfully added review for facility " + reviewDTO.getFacilityId());
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(), "Successfully added review.")
+                    .withHttpHeader(httpHeaders)
+                    .build();
+
+        } catch (Exception ex) {
+            logger.error("Error adding review for facility " + reviewDTO.getFacilityId());
             logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)

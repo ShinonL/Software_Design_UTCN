@@ -9,5 +9,5 @@ public class ReviewDTO {
     private String id;
     private int score;
     private String text;
-    private String appointmentId;
+    private String facilityId;
 }

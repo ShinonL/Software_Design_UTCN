@@ -11,8 +11,7 @@ public class AppointmentMapper {
             AppointmentDTO appointmentDTO,
             Pet pet,
             List<Facility> facilities,
-            List<Result> results,
-            List<Review> reviews
+            List<Result> results
     ) {
         Appointment appointment = new Appointment();
 
@@ -22,7 +21,6 @@ public class AppointmentMapper {
         appointment.setFacilities(facilities);
         appointment.setPet(pet);
         appointment.setResults(results);
-        appointment.setReviews(reviews);
 
         return appointment;
     }
@@ -42,11 +40,6 @@ public class AppointmentMapper {
         appointmentDTO.setResults(
                 appointment.getResults().stream()
                         .map(ResultMapper::convertToDTO)
-                        .collect(Collectors.toList())
-        );
-        appointmentDTO.setReviews(
-                appointment.getReviews().stream()
-                        .map(ReviewMapper::convertToDTO)
                         .collect(Collectors.toList())
         );
 

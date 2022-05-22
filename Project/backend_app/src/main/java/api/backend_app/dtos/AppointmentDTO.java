@@ -16,6 +16,5 @@ public class AppointmentDTO {
     private String petId;
     private List<FacilityDTO> facilities;
     private List<ResultDTO> results;
-    private List<ReviewDTO> reviews;
     private boolean toDecline;
 }

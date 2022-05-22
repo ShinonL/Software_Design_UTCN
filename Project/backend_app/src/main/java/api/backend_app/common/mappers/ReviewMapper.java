@@ -1,15 +1,15 @@
 package api.backend_app.common.mappers;
 
 import api.backend_app.dtos.ReviewDTO;
-import api.backend_app.entities.Appointment;
+import api.backend_app.entities.Facility;
 import api.backend_app.entities.Review;
 
 public class ReviewMapper {
-    public static Review convertToEntity(ReviewDTO reviewDTO, Appointment appointment) {
+    public static Review convertToEntity(ReviewDTO reviewDTO, Facility facility) {
         Review review = new Review();
 
         review.setId(reviewDTO.getId());
-        review.setAppointment(appointment);
+        review.setFacility(facility);
         review.setScore(reviewDTO.getScore());
         review.setText(reviewDTO.getText());
 
@@ -20,7 +20,7 @@ public class ReviewMapper {
         ReviewDTO reviewDTO = new ReviewDTO();
 
         reviewDTO.setId(review.getId());
-        reviewDTO.setAppointmentId(review.getAppointment().getId());
+        reviewDTO.setFacilityId(review.getFacility().getId());
         reviewDTO.setScore(review.getScore());
         reviewDTO.setText(review.getText());
 

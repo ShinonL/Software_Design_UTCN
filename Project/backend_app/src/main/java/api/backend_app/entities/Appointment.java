@@ -38,7 +38,4 @@ public final class Appointment {
 
     @OneToMany(mappedBy = "appointment")
     private List<Result> results;
-
-    @OneToMany(mappedBy = "appointment")
-    private List<Review> reviews;
 }
