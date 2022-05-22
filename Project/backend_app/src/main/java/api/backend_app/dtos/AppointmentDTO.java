@@ -17,4 +17,5 @@ public class AppointmentDTO {
     private List<FacilityDTO> facilities;
     private List<ResultDTO> results;
     private List<ReviewDTO> reviews;
+    private boolean toDecline;
 }

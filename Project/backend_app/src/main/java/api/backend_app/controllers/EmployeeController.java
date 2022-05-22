@@ -75,4 +75,28 @@ public class EmployeeController {
                     .build();
         }
     }
+
+    @PostMapping("/change-appointment-state")
+    public ResponseEntity<ApiResponse> changeAppointmentState(@RequestBody AppointmentDTO appointmentDTO) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "EmployeeController::changeAppointmentState");
+
+        try {
+            logger.info("Changing state for appointment " + appointmentDTO.getId());
+            AppointmentDTO appointment = appointmentService.changeAppointmentState(appointmentDTO);
+
+            logger.info("Successfully changed state for appointment " + appointmentDTO.getId());
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(), "Successfully changed state.")
+                    .withHttpHeader(httpHeaders)
+                    .withData(appointment)
+                    .build();
+
+        } catch (Exception ex) {
+            logger.error("Error changing status for appointment " + appointmentDTO.getId());
+            logger.error(ex.getMessage());
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
+                    .withHttpHeader(httpHeaders)
+                    .build();
+        }
+    }
 }

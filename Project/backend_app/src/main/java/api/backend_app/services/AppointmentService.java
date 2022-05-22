@@ -1,6 +1,7 @@
 package api.backend_app.services;
 
 import api.backend_app.common.enums.AppointmentState;
+import api.backend_app.common.exceptions.InvalidDataException;
 import api.backend_app.common.exceptions.NotFoundException;
 import api.backend_app.common.mappers.AppointmentMapper;
 import api.backend_app.common.mappers.PetMapper;
@@ -107,5 +108,43 @@ public class AppointmentService {
                 .stream()
                 .map(AppointmentMapper::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Change the state of a given appointment
+     * @param appointmentDTO the appointment whose state has to be changed
+     * @return the appointment with a new state
+     * @throws Exception if the appointment details are invalid or the DB couldn't be accessed
+     */
+    public AppointmentDTO changeAppointmentState(AppointmentDTO appointmentDTO) throws Exception {
+        logger.info("Validating appointment details");
+        Optional<Appointment> appointment = appointmentRepository.findById(appointmentDTO.getId());
+        if (appointment.isEmpty()) {
+            logger.error("Appointment " + appointmentDTO.getId() + "was not found");
+            throw new NotFoundException("Appointment was not found.");
+        }
+
+        logger.info("Updating the state");
+        Appointment updatedAppointment = appointment.get();
+        updatedAppointment.setAppointmentState(
+                getNextState(updatedAppointment.getAppointmentState(), appointmentDTO.isToDecline())
+        );
+
+        logger.info("Saving the new state");
+        appointmentRepository.save(updatedAppointment);
+
+        return AppointmentMapper.convertToDTO(updatedAppointment);
+    }
+
+    private AppointmentState getNextState(AppointmentState appointmentState, boolean decline) throws Exception {
+        switch (appointmentState) {
+            case PENDING:
+                if (decline)
+                    return AppointmentState.DECLINED;
+                else return AppointmentState.CONFIRMED;
+            case CONFIRMED: return AppointmentState.IN_PROGRESS;
+            case IN_PROGRESS: return AppointmentState.FINISHED;
+            default: throw new InvalidDataException("Cannot change this status.");
+        }
     }
 }
