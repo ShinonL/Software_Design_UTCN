@@ -2,9 +2,11 @@
   <a routerLink="/home">
     <img src="../../assets/resources/logo.png">
   </a>
+  Veterinae
   <span>
     <a mat-button *ngIf="!isLoggedIn()" (click)="openLoginDialog()" routerLinkActive="active">Login</a>
     <a mat-button mat-raised-button *ngIf="!isLoggedIn()" (click)="openRegisterDialog()" routerLinkActive="active">Register</a>
+    <a mat-button mat-raised-button *ngIf="isLoggedIn()" (click)="onLogout()" routerLinkActive="active">Logout</a>
   </span>
 </mat-toolbar>
 

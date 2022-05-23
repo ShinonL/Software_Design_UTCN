@@ -1,0 +1,29 @@
+<p>home works!</p>
+<p>home works!</p>
+<div class="align">
+    <h1 class="titles">Our Services</h1>
+    <div fxLayout="row wrap" fxLayoutGap="20px">
+        <div fxFlex="30%" *ngFor="let facility of facilities">
+            <mat-card class="card mat-elevation-z6">
+                <mat-card-header>
+                    <div mat-card-avatar class="header-image"></div>
+                    <mat-card-title> {{ facility.name }} </mat-card-title>
+                    <mat-card-subtitle> 
+                        <rating  style="color: #4e407e; font-size: 20px;" [(ngModel)]="facility.score" [max]="5" [readonly]="true"></rating> 
+                    </mat-card-subtitle>
+                    <mat-chip-list aria-label="Fish selection">
+                        <mat-chip color="warn" selected>{{ facility.price | currency:'EUR' }}</mat-chip>
+                    </mat-chip-list>
+                </mat-card-header>
+                <mat-card-content>
+                    <img mat-card-image src="https://source.unsplash.com/600x600/?veterinary">
+                    <p> {{ facility.description }}</p>
+                </mat-card-content>
+                <mat-card-actions align="end">
+                    <button mat-raised-button color="accent">Book Appointment</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+</div>
+

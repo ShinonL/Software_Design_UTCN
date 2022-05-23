@@ -26,4 +26,8 @@ export class AppComponent {
   isLoggedIn() {
     return localStorage.getItem('token') != null
   }
+
+  onLogout() {
+    localStorage.clear()
+  }
 }

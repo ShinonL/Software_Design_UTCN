@@ -8,9 +8,9 @@ import { UserModel } from '../models/user.model';
   providedIn: 'root'
 })
 export class AuthService {
-  url = 'http://localhost:8080/api/veterinae/auth';
-  login_endpoint = 'login';
-  register_endpoint = 'register';
+  private url = 'http://localhost:8080/api/veterinae/auth';
+  private login_endpoint = 'login';
+  private register_endpoint = 'register';
 
   constructor(protected httpClient: HttpClient) {}
 
