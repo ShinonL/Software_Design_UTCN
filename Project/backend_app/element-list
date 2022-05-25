@@ -1,0 +1,12 @@
+api.backend_app
+api.backend_app.common.enums
+api.backend_app.common.exceptions
+api.backend_app.common.mappers
+api.backend_app.controllers
+api.backend_app.dtos
+api.backend_app.entities
+api.backend_app.repositories
+api.backend_app.response
+api.backend_app.security
+api.backend_app.services
+api.backend_app.validators

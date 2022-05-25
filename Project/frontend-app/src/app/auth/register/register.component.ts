@@ -44,6 +44,8 @@ export class RegisterComponent implements OnInit {
         (res) => {
           sessionStorage.setItem('username', this.username.value);
           sessionStorage.setItem('password', this.password.value);
+
+          location.reload();
         }, 
         (err) => console.log(err)
       );

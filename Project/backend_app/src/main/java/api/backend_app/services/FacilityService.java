@@ -72,6 +72,22 @@ public class FacilityService {
     }
 
     /**
+     * Retrieve a facility that has the given id
+     * @return the facility found
+     * @throws Exception if there was nothing found
+     */
+    public FacilityDTO findFacilityById(String id) throws Exception {
+        logger.info("Retrieving bacility " + id);
+        Optional<Facility> facility = facilityRepository.findById(id);
+
+        if (facility.isEmpty()) {
+            logger.error("Facility " + id + " was not found");
+            throw new NotFoundException("Facility was not found.");
+        }
+        return FacilityMapper.convertToDTO(facility.get());
+    }
+
+    /**
      * Create a new review with the given details
      * @param reviewDTO the details of the new review
      * @throws Exception if any of the details are invalid or if it couldn't access the DB

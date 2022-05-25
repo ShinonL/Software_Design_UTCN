@@ -2,8 +2,10 @@
   <a routerLink="/home">
     <img src="../../assets/resources/logo.png">
   </a>
-  Veterinae
-  <span>
+  <a mat-button *ngIf="sharedService.isCustomer()" routerLink="/pets" >View pets</a>
+  <a mat-button routerLink="/health-references" >Health References</a>
+  <a mat-button *ngIf="sharedService.isCustomer()" routerLink="/my-appointments" >My appointments</a>
+    <span>
     <a mat-button *ngIf="!isLoggedIn()" (click)="openLoginDialog()" routerLinkActive="active">Login</a>
     <a mat-button mat-raised-button *ngIf="!isLoggedIn()" (click)="openRegisterDialog()" routerLinkActive="active">Register</a>
     <a mat-button mat-raised-button *ngIf="isLoggedIn()" (click)="onLogout()" routerLinkActive="active">Logout</a>

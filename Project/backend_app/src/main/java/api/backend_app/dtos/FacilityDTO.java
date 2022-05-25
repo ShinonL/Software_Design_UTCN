@@ -1,10 +1,8 @@
 package api.backend_app.dtos;
 
-import api.backend_app.entities.Appointment;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Getter

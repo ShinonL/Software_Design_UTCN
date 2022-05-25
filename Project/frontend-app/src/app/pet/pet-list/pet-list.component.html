@@ -1,0 +1,31 @@
+<p>pet-list works!</p>
+<p>pet-list works!</p>
+<div class="align">
+    <h1 class="titles">These are your pets</h1>
+    <button mat-raised-button class="create-btn" color="primary" (click)="openCreate()">
+        Register a new pet
+        <fa-icon [icon]="faPlusCircle"></fa-icon>
+    </button>
+    <mat-divider></mat-divider>
+    <div fxLayout="row wrap" fxLayoutGap="20px">
+        <div fxFlex="30%" *ngFor="let pet of pets">
+            <mat-card class="card mat-elevation-z6">
+                <mat-card-header>
+                    <div mat-card-avatar class="header-image"></div>
+                    <mat-card-title> {{ pet.name }} </mat-card-title>
+                    <mat-card-subtitle> 
+                        {{ pet.petType.type }}
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <img mat-card-image src="https://source.unsplash.com/600x600/?pet">
+                    <p> I'am {{ pet.age }}!!</p>
+                </mat-card-content>
+                <mat-card-actions align="end">
+                    <button *ngIf="sharedService.isCustomer()" mat-raised-button color="accent" (click)="openApp(pet.id || '')">Book Appointment</button>
+                    <button mat-stroked-button color="primary" (click)="openHR(pet.petType.id || '')">Health References</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+</div>

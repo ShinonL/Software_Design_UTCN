@@ -1,0 +1,25 @@
+<p>facility works!</p>
+<p>facility works!</p>
+<div class="align">
+    <h1 class="titles">{{ facility.name }}</h1>
+    <mat-divider></mat-divider>
+    <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Description
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p> {{ facility.description }}</p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel *ngFor="let review of facility.reviews">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                <rating  style="color: #4e407e; font-size: 20px;" [(ngModel)]="review.score" [max]="5" [readonly]="true"></rating> 
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>{{ review.text }}</p>
+        </mat-expansion-panel>
+      </mat-accordion>
+</div>

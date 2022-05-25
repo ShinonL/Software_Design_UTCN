@@ -56,6 +56,31 @@ public class PublicController {
         }
     }
 
+    @GetMapping("/find-facility/{id}")
+    public ResponseEntity<ApiResponse> findFacilityById(@PathVariable String id) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "PublicController::findFacilityById");
+
+        try {
+            logger.info("Retrieving facility " + id);
+            FacilityDTO facilityDTO = facilityService.findFacilityById(id);
+
+            logger.info("Successfully retrieved facility " + id);
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(),
+                    "Successfully retrieved facility " + id)
+                    .withHttpHeader(httpHeaders)
+                    .withData(facilityDTO)
+                    .build();
+
+        } catch (Exception ex) {
+            logger.info("Error retrieving facility " + id);
+            logger.error(ex.getMessage());
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
+                    .withHttpHeader(httpHeaders)
+                    .build();
+        }
+    }
+
     @GetMapping("/find-pet-types")
     public ResponseEntity<ApiResponse> findPetTypes() {
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -74,6 +99,31 @@ public class PublicController {
 
         } catch (Exception ex) {
             logger.info("Error retrieving all pet types");
+            logger.error(ex.getMessage());
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
+                    .withHttpHeader(httpHeaders)
+                    .build();
+        }
+    }
+
+    @GetMapping("/find-pet-type/{id}")
+    public ResponseEntity<ApiResponse> findPetTypeById(@PathVariable String id) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Responded", "PublicController::findPetTypeById");
+
+        try {
+            logger.info("Retrieving pet type " + id);
+            PetTypeDTO petTypeDTOS = petService.findPetTypeById(id);
+
+            logger.info("Successfully retrieved pet type " + id);
+            return new ApiResponse.ApiResponseBuilder<>(HttpStatus.OK.value(),
+                    "Successfully retrieved pet type " + id)
+                    .withHttpHeader(httpHeaders)
+                    .withData(petTypeDTOS)
+                    .build();
+
+        } catch (Exception ex) {
+            logger.info("Error retrieving pet type " + id);
             logger.error(ex.getMessage());
             return new ApiResponse.ApiResponseBuilder<>(HttpStatus.BAD_REQUEST.value(), ex.getMessage())
                     .withHttpHeader(httpHeaders)

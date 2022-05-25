@@ -1,0 +1,31 @@
+<div class="main-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box">
+        <mat-card-header>
+            <mat-card-title>Register a new pet</mat-card-title>
+        </mat-card-header>
+    
+        <form class="example-form">
+    
+            <mat-card-content>
+                <mat-form-field class="example-full-width">
+                    <input matInput [formControl]="name" placeholder="Pet Name">
+                </mat-form-field>
+        
+                <mat-form-field class="example-full-width">
+                    <input matInput [formControl]="age" type="number" placeholder="Pet age">
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <mat-label>Pet Type</mat-label>
+                    <mat-select [(ngModel)]="petTypeId" [ngModelOptions]="{standalone: true}">
+                        <mat-option *ngFor="let petType of petTypes" [value]="petType.id">
+                            {{ petType.type }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+    
+                <button mat-stroked-button color="accent" class="btn-block" (click)="onSave()">Save</button>
+            </mat-card-content>
+        </form>
+    </mat-card>
+</div>

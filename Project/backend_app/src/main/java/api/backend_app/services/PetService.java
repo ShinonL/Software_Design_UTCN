@@ -83,6 +83,22 @@ public class PetService {
     }
 
     /**
+     * Retrieve a pet type by id
+     * @return the found pet type
+     * @throws Exception if it was not found
+     */
+    public PetTypeDTO findPetTypeById(String id) throws Exception {
+        logger.info("Retrieving pet type " + id);
+        Optional<PetType> petType = petTypeRepository.findById(id);
+        if (petType.isEmpty()) {
+            logger.error("This pet type does not exist.");
+            throw new NotFoundException("This pet type does not exist.");
+        }
+
+        return PetTypeMapper.convertToDTO(petType.get());
+    }
+
+    /**
      * Create a new pet type with the given details
      * @param petDTO the details of the new facility
      * @throws Exception if any o the details are invalid or if it couldn't access the DB

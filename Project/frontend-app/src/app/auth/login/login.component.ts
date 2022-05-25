@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { ApiResponeModel } from 'src/app/models/api-response.model';
+import { JwtHelperService } from "@auth0/angular-jwt";
+
 import { UserModel } from 'src/app/models/user.model';
 import { AuthService } from '../auth.service';
 
@@ -26,7 +27,12 @@ export class LoginComponent {
      
     this.authService.login(user).subscribe(
       (res) => {
-        localStorage.setItem('token', JSON.stringify(res.data));
+        localStorage.setItem('token', res.data);
+
+        const helper = new JwtHelperService();
+        var token = helper.decodeToken(res.data);
+        localStorage.setItem('role', token.role[0].authority);
+        localStorage.setItem('username', token.username);
         location.reload();
       },
       (err) => console.log(err)

@@ -1,0 +1,37 @@
+.card {
+    margin-top: 2vh;
+    max-width: 400px;
+}
+
+.header-image {
+    background-image: url('https://source.unsplash.com/600x600/?animal');
+    background-size: cover;
+}
+
+h1 {
+    font-family: Rajdhani;
+    font-size: 4vw;
+    color: #4e407e;
+    font-weight: bolder;
+
+    text-align: center;
+    padding-top: 3vh;
+}
+
+.align {
+    margin-left: 5vw;
+    margin-right: 5vw;
+}
+
+fa-icon {
+    padding-left: 8px;
+}
+
+.create-btn {
+    margin-bottom: 2vh;
+}
+
+.mat-stroked-button {
+	border: 1px solid currentColor;
+	background: #FFF7FA;
+}
